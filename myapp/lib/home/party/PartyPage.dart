@@ -18,8 +18,10 @@ class PartyPage extends ConsumerWidget {
             child: Text("CREATE PARTY")), //TODO Change route
         Text('or'),
         PressedButton(
-            onPressed: () => Navigator.pushNamed(context, PartySongs.route),
-            child: Text("JOIN PARTY")), //TODO
+          onPressed: () => Navigator.pushNamed(context, PartySongs.route),
+          child: Text("JOIN PARTY"),
+          color: Color(0xFF241C1C),
+        ), //TODO
         TextButton(
           onPressed: () => authManager.signOut(context),
           child: Text('Sign out'),

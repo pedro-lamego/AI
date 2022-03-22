@@ -47,6 +47,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         routes: RouterConfig.routes,
         home: user.maybeWhen(
             data: (user) {
+              print(user);
               if (user == null) return LoginPage();
               return HomePage();
             },

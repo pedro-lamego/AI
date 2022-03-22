@@ -11,20 +11,21 @@ class PartySongs extends StatelessWidget {
   Widget build(BuildContext context) {
     //put stream
     List<Playlist> playlists = [
-      Playlist([
-        Song("uid1", "song1", "4:20", "art1"),
-        Song("uid1", "song2", "4:20", "art2"),
-        Song("uid1", "song2", "4:20", "art2")
+      Playlist(
+        "uid",[
+        Song("uid1", "song1", "4:20", "art1", "name", "s", ),
+        Song("uid1", "song2", "4:20", "art2", "name", "s", ),
+        Song("uid1", "song2", "4:20", "art2", "name", "s", )
       ], "name1", "art1", DateTime.now()),
-      Playlist([
-        Song("uid1", "song1", "4:20", "art1"),
-        Song("uid1", "song2", "4:20", "art2"),
-        Song("uid1", "song2", "4:20", "art2")
+      Playlist("uid2",[
+        Song("uid1", "song1", "4:20", "art1", "name", "s"),
+        Song("uid1", "song2", "4:20", "art2", "name", "s"),
+        Song("uid1", "song2", "4:20", "art2", "name", "s")
       ], "name2", "art2", DateTime.now()),
-      Playlist([
-        Song("uid1", "song1", "4:20", "art1"),
-        Song("uid1", "song2", "4:20", "art2"),
-        Song("uid1", "song2", "4:20", "art2")
+      Playlist("uid",[
+        Song("uid1", "song1", "4:20", "art1", "name", "s"),
+        Song("uid1", "song2", "4:20", "art2", "name", "s"),
+        Song("uid1", "song2", "4:20", "art2", "name","s"), 
       ], "name3", "art3", DateTime.now())
     ];
     final theme = Theme.of(context);

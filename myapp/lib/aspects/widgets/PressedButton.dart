@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class PressedButton extends StatefulWidget {
   final AsyncCallback onPressed;
   final Widget child;
-  PressedButton({@required this.onPressed, @required this.child});
+  final Color color;
+  PressedButton({@required this.onPressed, @required this.child, this.color});
 
   @override
   State<PressedButton> createState() => _PressedButtonState();
@@ -35,7 +36,7 @@ class _PressedButtonState extends State<PressedButton> {
             )
           : widget.child,
       style: ElevatedButton.styleFrom(
-        primary: theme.primaryColor,
+        primary: widget.color ?? theme.primaryColor,
         padding: const EdgeInsets.all(8),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30)),

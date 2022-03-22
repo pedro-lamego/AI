@@ -11,9 +11,9 @@ class LikedSongs extends StatelessWidget {
   Widget build(BuildContext context) {
     //likedSongs = ref.watch(stream);
     List<Song> likedSongs = [
-      Song("uid1", "ola1", "4:20", "art1"),
-      Song("uid2", "ola2", "4:20", "art2"),
-      Song("uid3", "ola3", "4:20", "art3")
+      Song("uid1", "ola1", "4:20", "art1", "name", "s"),
+      Song("uid2", "ola2", "4:20", "art2", "name", "s"),
+      Song("uid3", "ola3", "4:20", "art3", "name", "s")
     ];
     final theme = Theme.of(context);
 

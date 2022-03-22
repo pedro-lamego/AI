@@ -8,8 +8,10 @@ class Song {
   final String name;
   final String duration;
   final String artistName;
+  final String srcImage;
+  final String albumName;
 
-  Song(this.uid, this.name, this.duration, this.artistName);
+  Song(this.uid, this.name, this.duration, this.artistName, this.srcImage, this.albumName);
 
   factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
 

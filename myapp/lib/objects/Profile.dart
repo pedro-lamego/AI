@@ -11,13 +11,23 @@ class Profile {
   String uid;
   String name;
   String email;
+  String playlistToken;
+  String spotifyToken;
   List<Playlist> playlists;
   List<Song> likedSongs;
-  
+
   // @JsonKey(ignore: true) TODO put image in profile
   // File image;
 
-  Profile(this.uid, this.likedSongs, this.playlists, { this.name, this.email,});
+  Profile(
+    this.uid,
+    this.name,
+    this.email,
+    this.playlistToken,
+    this.spotifyToken,
+    this.likedSongs,
+    this.playlists,
+  );
 
   String get profileName => name ?? "You haven't selected your name";
 
@@ -27,5 +37,4 @@ class Profile {
       _$ProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
-
 }

@@ -23,8 +23,8 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
   bool isLoading = false;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(text:"pedrownlamego@gmail.com");
+  final passwordController = TextEditingController(text: "dengue");
 
   @override
   void dispose() {
@@ -33,7 +33,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
     super.dispose();
   }
 
-  void forgotPassword() => Navigator.pushNamed(context, HomePage.route);
+  void forgotPassword() => Navigator.pushNamed(context, ForgotPassword.route);
 
   void register() => Navigator.pushNamed(context, Register.route);
 
@@ -41,21 +41,21 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
       emailController.text.isEmpty || passwordController.text.isEmpty;
 
   Future<void> login() async {
+  //   return authenticate(
+  //     (authManager) => authManager.signInUserAndPassFirebase(
+  //       context,
+  //       email: 'maria@maria.maria',
+  //       password: 'dengue',
+  //     ),
+  //   );
+    if (fieldsAreEmpty) return;
     return authenticate(
       (authManager) => authManager.signInUserAndPassFirebase(
         context,
-        email: 'maria@maria.maria',
-        password: 'dengue',
+        email: emailController.text,
+        password: passwordController.text,
       ),
     );
-    // if (fieldsAreEmpty) return;
-    // return authenticate(
-    //   (authManager) => authManager.signInUserAndPassFirebase(
-    //     context,
-    //     email: emailController.text,
-    //     password: passwordController.text,
-    //   ),
-    // );
   }
 
   @override

@@ -44,7 +44,7 @@ class AuthManager {
   }
 
   _fetchUserInfo(String userID) async {
-    DocumentReference userReference = firestore.collection('user').doc(userID);
+    DocumentReference userReference = firestore.collection('users').doc(userID);
     DocumentSnapshot userData = await userReference.get();
     int totalTimeWaiting = 0;
     while (userData.data() == null && totalTimeWaiting < 2000) {
@@ -87,7 +87,7 @@ class AuthManager {
 
   setUpUserStream() async {
     firestore
-        .collection("user")
+        .collection("users")
         .doc(userBloc.uid)
         .snapshots()
         .listen((snapshot) async {
@@ -108,26 +108,19 @@ class AuthManager {
     @required String password,
     @required String name,
   }) async {
-    email ="maria@maria.maria";
-    name = "Maria";
-    password = "dengue";
     try {
-      dynamic cid = await firestore.collection("artists").doc("HSYmqTuHsW1ALRdSzkv5").get();
-      print(cid.name);
+     
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final userRef = firestore.collection('users').doc(userCredential.user.uid);
-
-      DocumentSnapshot userDoc = await userRef.get();
-      while (userDoc.data() == null) {
-        await Future.delayed(Duration(milliseconds: 100));
-        userDoc = await userRef.get();
-      }
-      userRef.update({
+      final userRef = firestore.collection('users').doc(userCredential.user.uid).set({
         "name": name,
-        "timestamp": DateTime.now().toString()
+        "timestamp": DateTime.now().toString(),
+        "spotifyToken" : "",
+        "playlistToken" : "",
+        "likedSongs" : [],
+        "playlists" : [],
       });
 
     } on FirebaseAuthException catch (e) {
