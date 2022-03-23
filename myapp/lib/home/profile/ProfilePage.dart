@@ -1,7 +1,5 @@
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:myapp/aspects/widgets/BigPressedButton.dart';
-import 'package:myapp/aspects/widgets/PressedButton.dart';
-import 'package:myapp/home/HomePage.dart';
 import 'package:myapp/home/profile/screens/LikedSongs.dart';
 import 'package:myapp/home/profile/screens/PartySongs.dart';
 import 'package:myapp/providers.dart';
@@ -35,10 +33,12 @@ class ProfilePage extends ConsumerWidget {
             ),
             Text(user.name),
             BigPressedButton(
-                onPressed: () => Navigator.pushNamed(context, LikedSongs.route),
+                onPressed: () => Navigator.pushNamed(context, LikedSongs.route,
+                    arguments: user.likedSongs),
                 child: const Text("Liked Songs")),
             BigPressedButton(
-              onPressed: () => Navigator.pushNamed(context, PartySongs.route),
+              onPressed: () => Navigator.pushNamed(context, PartySongs.route,
+                  arguments: user.playlists),
               child: const Text("Parties you have joined"),
               color: const Color(0xFF7876FF),
             ),

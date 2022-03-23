@@ -9,9 +9,6 @@ import 'package:myapp/authentication/screens/Register.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:myapp/home/HomePage.dart';
-import 'package:myapp/home/profile/screens/LikedSongs.dart';
-import 'package:myapp/home/profile/screens/PartySongs.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   static const route = '/login';
@@ -97,6 +94,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
                       controller: passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.done,
+                      obscureText: true,
                     ),
                     const SizedBox(height: 8),
                     Container(
