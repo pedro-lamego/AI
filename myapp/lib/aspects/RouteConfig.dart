@@ -4,6 +4,8 @@ import 'package:myapp/authentication/screens/Register.dart';
 import 'package:myapp/home/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/home/party/PartyPage.dart';
+import 'package:myapp/home/party/screens/CreateParty.dart';
+import 'package:myapp/home/party/screens/JoinParty.dart';
 import 'package:myapp/home/profile/screens/LikedSongs.dart';
 import 'package:myapp/home/profile/screens/PartySongs.dart';
 
@@ -15,5 +17,7 @@ class RouterConfig {
     ForgotPassword.route: (_) => ForgotPassword(),
     LikedSongs.route: (_) => LikedSongs(),
     PartySongs.route: (_) => PartySongs(),
+    CreateParty.route: (_) => CreateParty(),
+    JoinParty.route: (_) => JoinParty(),
   };
 }
