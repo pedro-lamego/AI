@@ -38,10 +38,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: theme.backgroundColor,
+          shadowColor: Colors.transparent,
           bottom: TabBar(
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorColor: theme.selectedRowColor,
             controller: _tabController,
-        tabs: [Text("Party"), Text("Profile")],
-      )),
+            tabs: [
+              Text(
+                "Party",
+                style: TextStyle(color: theme.hintColor, fontSize: 32),
+              ),
+              Text("Profile",
+                  style: TextStyle(color: theme.hintColor, fontSize: 32))
+            ],
+          )),
       backgroundColor: theme.backgroundColor,
       body: SafeArea(
         child: TabBarView(

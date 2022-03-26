@@ -12,23 +12,47 @@ class PartyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authManager = ref.watch(authManagerProvider);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        PressedButton(
-            onPressed: () => Navigator.pushNamed(context, CreateParty.route),
-            child: Text("CREATE PARTY")), //TODO Change route
-        Text('or'),
-        PressedButton(
-          onPressed: () => Navigator.pushNamed(context, JoinParty.route),
-          child: Text("JOIN PARTY"),
-          color: Color(0xFF241C1C),
-        ), //TODO
-        TextButton(
-          onPressed: () => authManager.signOut(context),
-          child: Text('Sign out'),
-        ),
-      ],
+    final theme = Theme.of(context);
+    return Center(
+      child: Column(
+        children: [
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25.0),
+            child: PressedButton(
+              onPressed: () => Navigator.pushNamed(context, CreateParty.route),
+              child: Text(
+                "CREATE PARTY",
+                style: TextStyle(color: theme.selectedRowColor),
+              ),
+            ),
+          ), 
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: Text(
+              'or',
+              style: TextStyle(
+                  color: theme.hintColor,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 24),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 25.0),
+            child: PressedButton(
+              onPressed: () => Navigator.pushNamed(context, JoinParty.route),
+              child: Text("JOIN PARTY"),
+              color: theme.hintColor,
+            ),
+          ), 
+          // TextButton(
+          //   onPressed: () => authManager.signOut(context),
+          //   child: Text('Sign out'),
+          // ),
+          Spacer(),
+          Image.asset("assets/images/party.jpg", alignment: Alignment.bottomCenter,)
+        ],
+      ),
     );
   }
 }

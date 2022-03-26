@@ -24,10 +24,14 @@ class LikedSongs extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            foregroundColor: theme.primaryColor,
             backgroundColor: theme.backgroundColor,
-            expandedHeight: 150,
-            flexibleSpace: const FlexibleSpaceBar(
-              title: Text("Liked Songs"),
+            expandedHeight: 120,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                "Liked Songs",
+                style: TextStyle(color: theme.hintColor),
+              ),
               centerTitle: true,
             ),
           ),
@@ -39,7 +43,15 @@ class LikedSongs extends StatelessWidget {
 
   Widget _buildPlaylist(List<Song> likedSongs) => SliverToBoxAdapter(
         child: likedSongs.length == 0
-            ? Text("There are no songs liked")
+            ? const Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top:220.0),
+                  child: Text(
+                    "There are no songs liked",
+                  
+                  ),
+                ),
+              )
             : ListView.builder(
                 primary: false,
                 shrinkWrap: true,

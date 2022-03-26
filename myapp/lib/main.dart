@@ -43,6 +43,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           primaryColor: Color(0xFFE45826),
           hintColor: Color(0xFF241C1C),
           highlightColor: Color(0xFF0FAF63),
+          selectedRowColor: Color(0xFFF5F4F2)
         ),
         routes: RouterConfig.routes,
         home: user.maybeWhen(

@@ -20,7 +20,8 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
   bool isLoading = false;
-  final emailController = TextEditingController(text:"pedrownlamego@gmail.com");
+  final emailController =
+      TextEditingController(text: "pedrownlamego@gmail.com");
   final passwordController = TextEditingController(text: "dengue");
 
   @override
@@ -38,13 +39,13 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
       emailController.text.isEmpty || passwordController.text.isEmpty;
 
   Future<void> login() async {
-  //   return authenticate(
-  //     (authManager) => authManager.signInUserAndPassFirebase(
-  //       context,
-  //       email: 'maria@maria.maria',
-  //       password: 'dengue',
-  //     ),
-  //   );
+    //   return authenticate(
+    //     (authManager) => authManager.signInUserAndPassFirebase(
+    //       context,
+    //       email: 'maria@maria.maria',
+    //       password: 'dengue',
+    //     ),
+    //   );
     if (fieldsAreEmpty) return;
     return authenticate(
       (authManager) => authManager.signInUserAndPassFirebase(
@@ -71,14 +72,10 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
                   children: [
                     // ignore: prefer_const_constructors
                     Expanded(
-                      child:  Center(
+                      child: Center(
                         child: Padding(
                           padding: EdgeInsets.only(top: 30.0),
-                          child: Icon(
-                            Icons.music_note,
-                            size: 200,
-                            color: theme.primaryColor,
-                          ),
+                          child: Image.asset("assets/images/logo.jpeg"),
                         ),
                       ),
                     ),
@@ -96,23 +93,25 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
                       textInputAction: TextInputAction.done,
                       obscureText: true,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 20),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14, //TODO change
-                      ),
                       child: Text.rich(
                         TextSpan(
-                          text: "Forgot your password?",
-                          style: theme.textTheme.caption.copyWith(
-                            color: Colors.black,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = forgotPassword,
+                          text: "Forgot your password? ",
+                          children: [
+                            TextSpan(
+                              text: "Click Here",
+                              style: TextStyle(
+                                color: theme.primaryColor,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = forgotPassword,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 36),
+                    SizedBox(height: 24),
                     PressedButton(
                       onPressed: login,
                       child: const Text('LOG IN'),

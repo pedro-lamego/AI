@@ -11,6 +11,7 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStreamProvider);
+    final theme = Theme.of(context);
     return user.maybeWhen(
       loading: () => LoadingIndicator(indicatorType: Indicator.ballBeat),
       data: (user) => Center(
@@ -24,23 +25,30 @@ class ProfilePage extends ConsumerWidget {
                 width: 140,
                 decoration: BoxDecoration(
                   border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 4),
+                      color: theme.primaryColor, width: 4),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(70),
                   ),
                 ),
               ),
             ),
-            Text(user.name),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(user.name, style: TextStyle(color: theme.hintColor, fontSize: 26, fontWeight: FontWeight.w500)),
+            ),
+            
             BigPressedButton(
-                onPressed: () => Navigator.pushNamed(context, LikedSongs.route,
-                    arguments: user.likedSongs),
-                child: const Text("Liked Songs")),
+              onPressed: () => Navigator.pushNamed(context, LikedSongs.route,
+                  arguments: user.likedSongs),
+              child: const Text("Liked Songs"),
+              imgSrc: "disco.jpg",
+            ),
             BigPressedButton(
               onPressed: () => Navigator.pushNamed(context, PartySongs.route,
                   arguments: user.playlists),
-              child: const Text("Parties you have joined"),
+              child: const Text("Parties you\nhave joined"),
               color: const Color(0xFF7876FF),
+              imgSrc: "playlists.jpg",
             ),
           ],
         ),

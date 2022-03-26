@@ -71,10 +71,12 @@ class PartySongs extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            foregroundColor: theme.primaryColor,
             backgroundColor: theme.backgroundColor,
-            expandedHeight: 150,
+            expandedHeight: 120,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("Parties you\nhave joined"),
+              title: Text("Parties you\nhave joined",
+                  style: TextStyle(color: theme.hintColor)),
               centerTitle: true,
             ),
           ),
@@ -86,7 +88,11 @@ class PartySongs extends StatelessWidget {
 
   Widget _buildPlaylist(List<Playlist> playlists) => SliverToBoxAdapter(
         child: playlists.length == 0
-            ? Text("There are no songs liked")
+            ? const Center(
+                child: Padding(
+                padding: EdgeInsets.only(top: 200.0),
+                child: Text("There are no songs liked"),
+              ))
             : ListView.builder(
                 primary: false,
                 shrinkWrap: true,
