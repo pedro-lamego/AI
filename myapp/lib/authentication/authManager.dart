@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/aspects/failures/authFailure.dart';
 import 'package:myapp/aspects/failures/failure.dart';
+import 'package:myapp/objects/music/Playlist.dart';
+import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:myapp/objects/Profile.dart';
@@ -100,6 +102,29 @@ class AuthManager {
     });
   }
 
+  addLikedSong(Song song){
+    userBloc.likedSongs.add(song);
+
+    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+  }
+
+  removeLikedSong(int index){
+    userBloc.likedSongs.removeAt(index);
+
+    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+  }
+
+  addPlaylist(Playlist playlist){
+    userBloc.playlists.add(playlist);
+    
+    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+  }
+
+  removePlaylist(int index){
+    userBloc.playlists.removeAt(index);
+    
+    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+  }
   ///public
 
   Future<void> registerUserAndPassFirebase(
