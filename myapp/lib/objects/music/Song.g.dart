@@ -11,9 +11,9 @@ Song _$SongFromJson(Map<String, dynamic> json) {
     json['uid'] as String,
     json['name'] as String,
     json['duration'] as String,
-    json['artistName'] as String,
     json['srcImage'] as String,
-    json['albumName'] as String,
+    json['artistName'] as String,
+    json['artistUid'] as String,
     upvotes: json['upvotes'] as int,
     downvotes: json['downvotes'] as int,
   );
@@ -23,9 +23,9 @@ Map<String, dynamic> _$SongToJson(Song instance) => <String, dynamic>{
       'uid': instance.uid,
       'name': instance.name,
       'duration': instance.duration,
-      'artistName': instance.artistName,
       'srcImage': instance.srcImage,
-      'albumName': instance.albumName,
+      'artistName': instance.artistName,
+      'artistUid': instance.artistUid,
       'upvotes': instance.upvotes,
       'downvotes': instance.downvotes,
     };

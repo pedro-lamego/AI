@@ -13,10 +13,10 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
     json['email'] as String,
     json['playlistToken'] as String,
     json['spotifyToken'] as String,
-    (json['likedSongs'] as List)
-        ?.map(
-            (e) => e == null ? null : Song.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['likedSongs'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(
+          k, e == null ? null : Song.fromJson(e as Map<String, dynamic>)),
+    ),
     (json['playlists'] as List)
         ?.map((e) =>
             e == null ? null : Playlist.fromJson(e as Map<String, dynamic>))

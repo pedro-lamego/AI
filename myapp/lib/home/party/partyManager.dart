@@ -12,6 +12,7 @@ final partyManagerProvider = Provider<PartyManager>(
 
 class PartyManager {
   final Reader _read;
+
   get userStream => _read(userStreamProvider);
   FirebaseFirestore get firestore => _read(firestoreProvider);
 
@@ -72,7 +73,7 @@ class PartyManager {
     setUpPartyStream(partyUid);
   }
 
-  partyStopped(){
+  partyStopped() {
     //cancelar as subscricoes
     _partyStream.add(null);
   }
@@ -99,4 +100,6 @@ class PartyManager {
         .httpsCallable("stopSong")
         .call({"songUid": songUid});
   }
+
+  
 }

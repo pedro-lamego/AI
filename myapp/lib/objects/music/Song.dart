@@ -4,17 +4,17 @@ part 'Song.g.dart';
 
 @JsonSerializable()
 class Song {
-  final String uid;
+  String uid;
   final String name;
   final String duration;
-  final String artistName;
   final String srcImage;
-  final String albumName;
+  final String artistName;
+  final String artistUid;
   final int upvotes;
   final int downvotes;
 
-  Song(this.uid, this.name, this.duration, this.artistName, this.srcImage,
-      this.albumName,
+  Song(this.uid, this.name, this.duration, this.srcImage, this.artistName,
+      this.artistUid,
       {this.upvotes = 0, this.downvotes = 0});
 
   factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);

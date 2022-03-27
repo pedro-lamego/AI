@@ -14,7 +14,7 @@ class Profile {
   String playlistToken;
   String spotifyToken;
   List<Playlist> playlists;
-  List<Song> likedSongs;
+  Map<String, Song> likedSongs;
 
   // @JsonKey(ignore: true) TODO put image in profile
   // File image;

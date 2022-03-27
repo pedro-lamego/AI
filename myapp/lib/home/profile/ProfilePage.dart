@@ -1,5 +1,7 @@
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:myapp/aspects/widgets/BigPressedButton.dart';
+import 'package:myapp/aspects/widgets/PressedButton.dart';
+import 'package:myapp/authentication/authManager.dart';
 import 'package:myapp/home/profile/screens/LikedSongs.dart';
 import 'package:myapp/home/profile/screens/PartySongs.dart';
 import 'package:myapp/providers.dart';
@@ -24,8 +26,7 @@ class ProfilePage extends ConsumerWidget {
                 height: 140,
                 width: 140,
                 decoration: BoxDecoration(
-                  border: Border.all(
-                      color: theme.primaryColor, width: 4),
+                  border: Border.all(color: theme.primaryColor, width: 4),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(70),
                   ),
@@ -34,12 +35,21 @@ class ProfilePage extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(user.name, style: TextStyle(color: theme.hintColor, fontSize: 26, fontWeight: FontWeight.w500)),
+              child: Text(user.name,
+                  style: TextStyle(
+                      color: theme.hintColor,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500)),
             ),
-            
+            PressedButton(
+                onPressed: () => ref.read(authManagerProvider).populateDb(),
+                child: Text("POPULATE BITCHESSS")),
             BigPressedButton(
-              onPressed: () => Navigator.pushNamed(context, LikedSongs.route,
-                  arguments: user.likedSongs),
+              onPressed: () => Navigator.pushNamed(
+                context,
+                LikedSongs.route,
+                arguments: user.likedSongs,//TODO see this when i am less high
+              ),
               child: const Text("Liked Songs"),
               imgSrc: "disco.jpg",
             ),

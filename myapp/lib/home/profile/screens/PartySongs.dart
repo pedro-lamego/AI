@@ -91,7 +91,7 @@ class PartySongs extends StatelessWidget {
             ? const Center(
                 child: Padding(
                 padding: EdgeInsets.only(top: 200.0),
-                child: Text("There are no songs liked"),
+                child: Text("There are no playlists"),
               ))
             : ListView.builder(
                 primary: false,

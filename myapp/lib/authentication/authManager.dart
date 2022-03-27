@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,29 +103,67 @@ class AuthManager {
     });
   }
 
-  addLikedSong(Song song){
-    userBloc.likedSongs.add(song);
+  addLikedSong(Song song) {
+    Map<String, Map<String, dynamic>> result = {};
+    userBloc.likedSongs.addAll({song.uid: song});
+    userBloc.likedSongs.forEach((uid, s) {
+      result.addAll({
+        uid: {
+          "uid": uid,
+          "name": s.name,
+          "duration": s.duration,
+          "artistName": s.artistName,
+          "artistUid": s.artistUid,
+          "srcImage": s.srcImage,
+          "timestamp": DateTime.now(),
+        }
+      });
+    });
 
-    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+    print(result.keys);
+
+    firestore
+        .collection("users")
+        .doc(userBloc.uid)
+        .update({"likedSongs": result});
   }
 
-  removeLikedSong(int index){
-    userBloc.likedSongs.removeAt(index);
+  removeLikedSong(String uid) {
+    Map<String, Map<String, dynamic>> result = {};
+    userBloc.likedSongs.remove(uid);
+    userBloc.likedSongs.forEach((uid, s) {
+      result.addAll({
+        uid: {
+          "uid": uid,
+          "name": s.name,
+          "duration": s.duration,
+          "artistName": s.artistName,
+          "artistUid": s.artistUid,
+          "srcImage": s.srcImage,
+          "timestamp": DateTime.now(),
+        }
+      });
+    });
 
-    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+
+    firestore
+        .collection("users")
+        .doc(userBloc.uid)
+        .update({"likedSongs": result});
   }
 
-  addPlaylist(Playlist playlist){
+  addPlaylist(Playlist playlist) {
     userBloc.playlists.add(playlist);
-    
+
     firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
   }
 
-  removePlaylist(int index){
+  removePlaylist(int index) {
     userBloc.playlists.removeAt(index);
-    
+
     firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
   }
+
   ///public
 
   Future<void> registerUserAndPassFirebase(
@@ -134,20 +173,19 @@ class AuthManager {
     @required String name,
   }) async {
     try {
-     
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final userRef = firestore.collection('users').doc(userCredential.user.uid).set({
+      final userRef =
+          firestore.collection('users').doc(userCredential.user.uid).set({
         "name": name,
         "timestamp": DateTime.now().toString(),
-        "spotifyToken" : "",
-        "playlistToken" : "",
-        "likedSongs" : [],
-        "playlists" : [],
+        "spotifyToken": "",
+        "playlistToken": "",
+        "likedSongs": {},
+        "playlists": [],
       });
-
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'weak-password':
@@ -158,8 +196,7 @@ class AuthManager {
           print(e.code);
           throw Failure.unexpected(context);
       }
-    }
-    on Exception catch(e){
+    } on Exception catch (e) {
       print(e.toString());
     }
     Navigator.pop(context);
@@ -209,5 +246,85 @@ class AuthManager {
     await _emptyManagers();
     await firebaseAuth.signOut();
     await deleteUserFile();
+  }
+
+  List<Map<String, dynamic>> json = [
+    {
+      "i": "https://i.scdn.co/image/ab67616d0000b2732aebf42d8901fbcd14c9eca8",
+      "t": [
+        {"n": "Before Paris", "d": "02:30", "uid": "4D5POIvEJfBH8wO80Ic4T8"},
+        {"n": "Lost in Paris", "d": "03:14", "uid": "4A7DUET5H4f7dJkUhjfVFB"},
+        {
+          "n": "South of the River",
+          "d": "04:30",
+          "uid": "5w3yxRRxy5pvZdUvBJF6ve"
+        },
+        {"n": "Movie", "d": "06:57", "uid": "6pxElwU80zhjbCC77Vn8EI"},
+        {"n": "Tick Tock", "d": "04:14", "uid": "3al8a3uZrOZIHc6J1n8i5f"},
+        {
+          "n": "It Runs Through Me",
+          "d": "04:22",
+          "uid": "02CygBCQOIyEuhNZqHHcNx"
+        },
+        {
+          "n": "Isn't She Lovely",
+          "d": "01:27",
+          "uid": "23H8PpuhyTDHwpqcDm7vS6"
+        },
+        {"n": "Disco Yes", "d": "05:41", "uid": "61Ivix5DTnDPVjp1dgLyov"},
+        {"n": "Man Like You", "d": "05:41", "uid": "673BqQR0tNM3VtzcV3Ul2Q"},
+        {"n": "Water Baby", "d": "05:32", "uid": "6Pd20wirRDM9k4e69px3dN"},
+        {
+          "n": "You're On My Mind",
+          "d": "04:19",
+          "uid": "0ORL2BIQwHdshE8Zp2En2M"
+        },
+        {"n": "Cos I Love You", "d": "04:14", "uid": "58xN31xmYcfrgA56gAeM3W"},
+        {
+          "n": "We've Come So Far",
+          "d": "04:53",
+          "uid": "46mMjdrfaJicOdrOA7NtBa"
+        }
+      ],
+      "aN": "Tom Misch",
+      "aU": "1uiEZYehlNivdK3iQyAbye"
+    },
+    {
+      "i": "https://i.scdn.co/image/ab67616d0000b2731918c7e10115b80211065022",
+      "t": [
+        {
+          "n": "Honey, There's No Time",
+          "d": "04:21",
+          "uid": "6utl2puTMct2t0ntNnZc68"
+        },
+        {"n": "By the Poolside", "d": "04:37", "uid": "0DHRNZ26HFLPnmwDUjGB89"},
+        {
+          "n": "Sink into the Floor",
+          "d": "05:41",
+          "uid": "4UCiDcv0yO9tNLZbkZeBBA"
+        },
+        {"n": "Noche Oscura", "d": "05:46", "uid": "0ZvWdGaWqnPs99z1Xso8YG"}
+      ],
+      "aN": "Feng Suave",
+      "aU": "73dudJ9j0HStIhJDU8MjMI"
+    },
+  ];
+
+  populateDb() async {
+    for (dynamic album in json) {
+      for (dynamic music in album["t"]) {
+        Map<String, dynamic> result = {};
+        result.addAll({
+          "srcImage": album["i"],
+          "name": music["n"],
+          "duration": music["d"],
+          "artistName": album["aN"],
+          "artistUid": album["aU"]
+        });
+        // firestore.collection("musics").doc(music["uid"]).set(result);
+        addLikedSong(Song(music["uid"], music["n"], music["d"], album["i"],
+            album["aN"], album["aU"]));
+      }
+    }
   }
 }

@@ -1,12 +1,9 @@
 import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/authentication/authManager.dart';
-import 'package:myapp/home/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/home/party/screens/CreateParty.dart';
 import 'package:myapp/home/party/screens/JoinParty.dart';
-import 'package:myapp/home/profile/screens/LikedSongs.dart';
-import 'package:myapp/home/profile/screens/PartySongs.dart';
 
 class PartyPage extends ConsumerWidget {
   @override
@@ -45,10 +42,10 @@ class PartyPage extends ConsumerWidget {
               color: theme.hintColor,
             ),
           ), 
-          // TextButton(
-          //   onPressed: () => authManager.signOut(context),
-          //   child: Text('Sign out'),
-          // ),
+          TextButton(
+            onPressed: () => authManager.signOut(context),
+            child: Text('Sign out'),
+          ),
           Spacer(),
           Image.asset("assets/images/party.jpg", alignment: Alignment.bottomCenter,)
         ],

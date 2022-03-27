@@ -5,20 +5,15 @@ import 'package:myapp/home/profile/components/SongsTile.dart';
 import 'package:myapp/objects/music/Song.dart';
 
 class LikedSongs extends StatelessWidget {
-  final List<Song> likedSongs;
+  final Map<String, Song> likedSongs;
   static String route = '/likedSongs';
 
   LikedSongs(this.likedSongs, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    //likedSongs = ref.watch(stream);
-    // List<Song> likedSongs = [
-    //   Song("uid1", "ola1", "4:20", "art1", "name", "s"),
-    //   Song("uid2", "ola2", "4:20", "art2", "name", "s"),
-    //   Song("uid3", "ola3", "4:20", "art3", "name", "s")
-    // ];
     final theme = Theme.of(context);
-
+    List<Song> likedSongsList = [];
+    likedSongs.forEach(((_, value) => likedSongsList.add(value)));
     return Scaffold(
       backgroundColor: theme.backgroundColor,
       body: CustomScrollView(
@@ -35,7 +30,7 @@ class LikedSongs extends StatelessWidget {
               centerTitle: true,
             ),
           ),
-          _buildPlaylist(likedSongs),
+          _buildPlaylist(likedSongsList),
         ],
       ),
     );
@@ -45,10 +40,9 @@ class LikedSongs extends StatelessWidget {
         child: likedSongs.length == 0
             ? const Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top:220.0),
+                  padding: EdgeInsets.only(top: 220.0),
                   child: Text(
                     "There are no songs liked",
-                  
                   ),
                 ),
               )

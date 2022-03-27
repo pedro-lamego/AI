@@ -2,9 +2,10 @@ import 'package:myapp/aspects/widgets/AppBarPretty.dart';
 import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/aspects/widgets/TapTo.dart';
 import 'package:myapp/aspects/widgets/TextFieldPretty.dart';
-import 'package:myapp/authentication/AuthManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:myapp/home/party/partyManager.dart';
+import 'package:myapp/providers.dart';
 
 class CreateParty extends ConsumerWidget {
   static const route = '/createParty';
@@ -14,6 +15,7 @@ class CreateParty extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authManager = ref.read(userStreamProvider);
     return TapTo.unfocus(
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -39,11 +41,15 @@ class CreateParty extends ConsumerWidget {
                 ),
                 SizedBox(height: 24),
                 PressedButton(
-                  onPressed: () {}
-                  // ref
-                  // .read(partyManagerProvider)
-                  // .createParty(context, nameController.text),
-                  ,
+                  onPressed: () {
+                    authManager.maybeWhen(
+                      data: (user) => ref
+                          .read(partyManagerProvider)
+                          .createParty(
+                              nameController.text, user.uid, DateTime.now()),
+                    );
+                    return;
+                  },
                   child: Text("CONFIRM"),
                 ),
               ],
