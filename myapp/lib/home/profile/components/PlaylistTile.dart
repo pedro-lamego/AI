@@ -5,8 +5,9 @@ import 'package:myapp/objects/music/Playlist.dart';
 
 class PlaylistTile extends ConsumerWidget {
   final Playlist playlist;
+  final int index;
   final VoidCallback onTap;
-  PlaylistTile(this.playlist, this.onTap);
+  PlaylistTile(this.playlist, this.index, this.onTap);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,8 +22,8 @@ class PlaylistTile extends ConsumerWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                    image: const NetworkImage(
-                        "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef"),
+                    image:
+                        AssetImage("assets/images/party${(index % 4) + 1}.png"),
                     fit: BoxFit.cover)),
             child: Align(
               alignment: Alignment.centerLeft,

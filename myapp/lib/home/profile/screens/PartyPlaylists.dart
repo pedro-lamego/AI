@@ -49,7 +49,7 @@ class PartyPlaylists extends ConsumerWidget {
                 padding: const EdgeInsets.only(top: 8),
                 itemCount: playlists.length,
                 itemBuilder: (context, i) =>
-                    PlaylistTile(playlists[i], () => Navigator.pushNamed(context, PartySongs.route, arguments: playlists[i].songs)),
+                    PlaylistTile(playlists[i], i, () => Navigator.pushNamed(context, PartySongs.route, arguments: playlists[i].songs)),
               ),
         // loading: () =>
         //     LoadingIndicator(indicatorType: Indicator.circleStrokeSpin),
