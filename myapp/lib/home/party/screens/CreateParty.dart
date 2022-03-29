@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/home/party/partyManager.dart';
 import 'package:myapp/providers.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
 
 class CreateParty extends ConsumerWidget {
   static const route = '/createParty';
@@ -42,6 +44,10 @@ class CreateParty extends ConsumerWidget {
                 SizedBox(height: 24),
                 PressedButton(
                   onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => QRCodeDialog(nameController.text)
+                    );
                     authManager.maybeWhen(
                       data: (user) => ref
                           .read(partyManagerProvider)
@@ -58,5 +64,21 @@ class CreateParty extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+
+  Widget QRCodeDialog(text) {
+    return Dialog(
+      child: Container(
+        //width: 200,
+        //height: 200,
+        child: QrImage(
+          //data:getRandomString(15) can be a option too
+          data: text,
+          version: QrVersions.auto,
+          //size: 200.0,
+          ),
+        ),
+      );
   }
 }

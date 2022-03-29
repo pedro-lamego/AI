@@ -17,6 +17,8 @@ dependencies:
   firebase_storage: ^10.2.9
   path_provider: ^2.0.2
   random_avatar: ^0.0.5
+  qr_flutter: ^4.0.0
+  qr_code_scanner: ^0.7.0
   flutter:
     sdk: flutter
   
