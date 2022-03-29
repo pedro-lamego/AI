@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/aspects/failures/authFailure.dart';
 import 'package:myapp/aspects/failures/failure.dart';
+import 'package:myapp/objects/music/LikedSong.dart';
 import 'package:myapp/objects/music/Playlist.dart';
 import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
@@ -103,7 +104,7 @@ class AuthManager {
     });
   }
 
-  addLikedSong(Song song) {
+  addLikedSong(LikedSong song) {
     Map<String, Map<String, dynamic>> result = {};
     userBloc.likedSongs.addAll({song.uid: song});
     userBloc.likedSongs.forEach((uid, s) {
@@ -115,12 +116,10 @@ class AuthManager {
           "artistName": s.artistName,
           "artistUid": s.artistUid,
           "srcImage": s.srcImage,
-          "timestamp": DateTime.now(),
+          "timestamp": s.timestamp,
         }
       });
     });
-
-    print(result.keys);
 
     firestore
         .collection("users")
@@ -128,7 +127,8 @@ class AuthManager {
         .update({"likedSongs": result});
   }
 
-  removeLikedSong(String uid) {
+  void removeLikedSong(String uid) {
+    print("uid");
     Map<String, Map<String, dynamic>> result = {};
     userBloc.likedSongs.remove(uid);
     userBloc.likedSongs.forEach((uid, s) {
@@ -140,25 +140,25 @@ class AuthManager {
           "artistName": s.artistName,
           "artistUid": s.artistUid,
           "srcImage": s.srcImage,
-          "timestamp": DateTime.now(),
+          "timestamp": s.timestamp,
         }
       });
+      firestore
+          .collection("users")
+          .doc(userBloc.uid)
+          .update({"likedSongs": result});
     });
-
-
-    firestore
-        .collection("users")
-        .doc(userBloc.uid)
-        .update({"likedSongs": result});
   }
 
   addPlaylist(Playlist playlist) {
+    //TODO change this
     userBloc.playlists.add(playlist);
 
     firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
   }
 
   removePlaylist(int index) {
+    //TODO change this
     userBloc.playlists.removeAt(index);
 
     firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
@@ -322,8 +322,8 @@ class AuthManager {
           "artistUid": album["aU"]
         });
         // firestore.collection("musics").doc(music["uid"]).set(result);
-        addLikedSong(Song(music["uid"], music["n"], music["d"], album["i"],
-            album["aN"], album["aU"]));
+        addLikedSong(LikedSong(music["uid"], music["n"], music["d"], album["i"],
+            album["aN"], album["aU"], DateTime.now().toIso8601String()));
       }
     }
   }

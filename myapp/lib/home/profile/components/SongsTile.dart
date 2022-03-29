@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/authentication/authManager.dart';
 import 'package:myapp/objects/music/Song.dart';
+import 'package:myapp/providers.dart';
 
-class SongsTile extends ConsumerWidget {
+class SongsTile extends ConsumerStatefulWidget {
   final Song song;
   SongsTile(this.song);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _SongsTileState createState() => _SongsTileState();
+}
+
+class _SongsTileState extends ConsumerState<SongsTile> {
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Padding(
@@ -17,7 +24,7 @@ class SongsTile extends ConsumerWidget {
         height: 80,
         child: Row(children: [
           Container(
-            child: Image.network(song.srcImage),
+            child: Image.network(widget.song.srcImage),
             width: 80,
             height: 80,
             decoration: const BoxDecoration(
@@ -29,21 +36,32 @@ class SongsTile extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  song.name,
+                  widget.song.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  song.artistName,
+                  widget.song.artistName,
                   textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300,),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                  ),
                 )
               ],
             ),
           ),
           Spacer(),
           Padding(
-            padding: const EdgeInsets.only(right:15.0),
-            child: Icon(Icons.heart_broken),
+            padding: const EdgeInsets.only(right: 15.0),
+            child: InkWell(
+              child: Icon(
+                Icons.star,
+                color: theme.primaryColor,
+              ),
+              onTap: () {
+                ref.read(authManagerProvider).removeLikedSong(widget.song.uid);
+              },
+            ),
           ),
         ]),
       ),

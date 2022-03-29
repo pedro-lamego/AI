@@ -1,3 +1,4 @@
+import 'package:myapp/objects/music/PlaylistSong.dart';
 import 'package:myapp/objects/music/Song.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,7 +7,7 @@ part 'Playlist.g.dart';
 @JsonSerializable()
 class Playlist {
   String uid;
-  List<Song> songs; //change Songs
+  List<PlaylistSong> songs; //change Songs
   final String name;
   final String owner;
   final DateTime dateTime;

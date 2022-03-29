@@ -17,7 +17,7 @@ class RouterConfig {
     HomePage.route: (_) => HomePage(),
     Register.route: (_) => Register(),
     ForgotPassword.route: (_) => ForgotPassword(),
-    LikedSongs.route: (context) => LikedSongs(_args(context)),
+    LikedSongs.route: (context) => LikedSongs(),
     PartySongs.route: (context) => PartySongs(_args(context)),
     CreateParty.route: (_) => CreateParty(),
     JoinParty.route: (_) => JoinParty(),
