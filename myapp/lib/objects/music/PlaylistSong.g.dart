@@ -8,12 +8,12 @@ part of 'PlaylistSong.dart';
 
 PlaylistSong _$PlaylistSongFromJson(Map<String, dynamic> json) {
   return PlaylistSong(
-    json['uid'] as String,
-    json['name'] as String,
-    json['duration'] as String,
-    json['srcImage'] as String,
-    json['artistName'] as String,
-    json['artistUid'] as String,
+    json['uid'],
+    json['name'],
+    json['duration'],
+    json['srcImage'],
+    json['artistName'],
+    json['artistUid'],
     upvotes: json['upvotes'] as int,
     downvotes: json['downvotes'] as int,
   );

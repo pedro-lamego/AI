@@ -3,7 +3,7 @@ import 'package:myapp/aspects/widgets/BigPressedButton.dart';
 import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/authentication/authManager.dart';
 import 'package:myapp/home/profile/screens/LikedSongs.dart';
-import 'package:myapp/home/profile/screens/PartySongs.dart';
+import 'package:myapp/home/profile/screens/PartyPlaylists.dart';
 import 'package:myapp/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,9 +41,9 @@ class ProfilePage extends ConsumerWidget {
                       fontSize: 26,
                       fontWeight: FontWeight.w500)),
             ),
-            PressedButton(
-                onPressed: () => ref.read(authManagerProvider).populateDb(),
-                child: Text("POPULATE BITCHESSS")),
+            // PressedButton(
+            //     onPressed: () => ref.read(authManagerProvider).populateDb(),
+            //     child: Text("POPULATE")),
             BigPressedButton(
               onPressed: () => Navigator.pushNamed(
                 context,
@@ -54,7 +54,7 @@ class ProfilePage extends ConsumerWidget {
               imgSrc: "disco.jpg",
             ),
             BigPressedButton(
-              onPressed: () => Navigator.pushNamed(context, PartySongs.route,
+              onPressed: () => Navigator.pushNamed(context, PartyPlaylists.route,
                   arguments: user.playlists),
               child: const Text("Parties you\nhave joined"),
               color: const Color(0xFF7876FF),

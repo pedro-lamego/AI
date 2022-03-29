@@ -11,14 +11,37 @@ class PlaylistTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    // print(playlist.name + " " + playlist.owner );
     return Center(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          child: Text(playlist.name),
-          height: 250,
-          width: MediaQuery.of(context).size.width * 0.8,
-        ), //TODO: go catch images
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                    image: const NetworkImage(
+                        "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef"),
+                    fit: BoxFit.cover)),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  playlist.name,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                    color: theme.selectedRowColor,
+                  ),
+                ),
+              ),
+            ),
+            height: 130,
+            width: MediaQuery.of(context).size.width * 0.8,
+          ), //TODO: go catch images
+        ),
       ),
     );
   }

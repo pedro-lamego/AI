@@ -7,7 +7,9 @@ import 'package:myapp/providers.dart';
 
 class SongsTile extends ConsumerStatefulWidget {
   final Song song;
-  SongsTile(this.song);
+  final bool isLikedSongs;
+
+  SongsTile(this.song, {this.isLikedSongs = true});
 
   @override
   _SongsTileState createState() => _SongsTileState();
@@ -51,18 +53,32 @@ class _SongsTileState extends ConsumerState<SongsTile> {
             ),
           ),
           Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(right: 15.0),
-            child: InkWell(
-              child: Icon(
-                Icons.star,
-                color: theme.primaryColor,
-              ),
-              onTap: () {
-                ref.read(authManagerProvider).removeLikedSong(widget.song.uid);
-              },
-            ),
-          ),
+          widget.isLikedSongs //TO DO change this
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: InkWell(
+                    child: Icon(
+                      Icons.star,
+                      color: theme.primaryColor,
+                    ),
+                    onTap: () {
+                      ref
+                          .read(authManagerProvider)
+                          .removeLikedSong(widget.song.uid);
+                    },
+                    // Icon(
+                    //   Icons.star,
+                    //   color: theme.backgroundColor,
+                    //   border:
+                    // ),
+                    // onTap: () {
+                    //   ref
+                    //       .read(authManagerProvider)
+                    //       .addLikedSong(widget.song);
+                    // },
+                  ),
+                )
+              : Container(),
         ]),
       ),
     );

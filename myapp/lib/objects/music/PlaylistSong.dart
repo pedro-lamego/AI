@@ -5,17 +5,10 @@ part 'PlaylistSong.g.dart';
 
 @JsonSerializable()
 class PlaylistSong extends Song {
-  String uid;
-  final String name;
-  final String duration;
-  final String srcImage;
-  final String artistName;
-  final String artistUid;
   final int upvotes;
   final int downvotes;
 
-  PlaylistSong(this.uid, this.name, this.duration, this.srcImage,
-      this.artistName, this.artistUid,
+  PlaylistSong(uid, name, duration, srcImage, artistName, artistUid,
       {this.upvotes = 0, this.downvotes = 0})
       : super(uid, name, duration, srcImage, artistName, artistUid);
 

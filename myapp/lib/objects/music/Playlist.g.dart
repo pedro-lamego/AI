@@ -15,9 +15,7 @@ Playlist _$PlaylistFromJson(Map<String, dynamic> json) {
         ?.toList(),
     json['name'] as String,
     json['owner'] as String,
-    json['dateTime'] == null
-        ? null
-        : DateTime.parse(json['dateTime'] as String),
+    json['timestamp'] as String,
   );
 }
 
@@ -26,5 +24,5 @@ Map<String, dynamic> _$PlaylistToJson(Playlist instance) => <String, dynamic>{
       'songs': instance.songs,
       'name': instance.name,
       'owner': instance.owner,
-      'dateTime': instance.dateTime?.toIso8601String(),
+      'timestamp': instance.timestamp,
     };

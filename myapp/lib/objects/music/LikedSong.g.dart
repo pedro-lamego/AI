@@ -8,13 +8,13 @@ part of 'LikedSong.dart';
 
 LikedSong _$LikedSongFromJson(Map<String, dynamic> json) {
   return LikedSong(
-    json['uid'] as String,
-    json['name'] as String,
-    json['duration'] as String,
-    json['srcImage'] as String,
-    json['artistName'] as String,
-    json['artistUid'] as String,
-    json['timestamp'] as String
+    json['uid'],
+    json['name'],
+    json['duration'],
+    json['srcImage'],
+    json['artistName'],
+    json['artistUid'],
+    json['timestamp'] as String,
   );
 }
 

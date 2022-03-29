@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/home/party/screens/CreateParty.dart';
 import 'package:myapp/home/party/screens/JoinParty.dart';
 import 'package:myapp/home/profile/screens/LikedSongs.dart';
+import 'package:myapp/home/profile/screens/PartyPlaylists.dart';
 import 'package:myapp/home/profile/screens/PartySongs.dart';
 
 class RouterConfig {
@@ -18,6 +19,7 @@ class RouterConfig {
     Register.route: (_) => Register(),
     ForgotPassword.route: (_) => ForgotPassword(),
     LikedSongs.route: (context) => LikedSongs(),
+    PartyPlaylists.route: (context) => PartyPlaylists(),
     PartySongs.route: (context) => PartySongs(_args(context)),
     CreateParty.route: (_) => CreateParty(),
     JoinParty.route: (_) => JoinParty(),

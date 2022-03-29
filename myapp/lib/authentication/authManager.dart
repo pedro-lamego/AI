@@ -9,6 +9,7 @@ import 'package:myapp/aspects/failures/authFailure.dart';
 import 'package:myapp/aspects/failures/failure.dart';
 import 'package:myapp/objects/music/LikedSong.dart';
 import 'package:myapp/objects/music/Playlist.dart';
+import 'package:myapp/objects/music/PlaylistSong.dart';
 import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
 import 'package:rxdart/rxdart.dart';
@@ -151,17 +152,45 @@ class AuthManager {
   }
 
   addPlaylist(Playlist playlist) {
-    //TODO change this
-    userBloc.playlists.add(playlist);
+    Map<String, dynamic> result = {};
+    List<Map<String, dynamic>> songs = [];
 
-    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+    for (Song song in playlist.songs) {
+      songs.add(song.toJson());
+    }
+
+    result.addAll({
+      "uid": playlist.uid,
+      "name": playlist.name,
+      "owner": playlist.owner,
+      "songs": songs,
+      "timestamp": playlist.timestamp,
+    });
+
+    print(result);
+    firestore.collection("users").doc(userBloc.uid).update({
+      "playlists": FieldValue.arrayUnion([result])
+    });
   }
 
-  removePlaylist(int index) {
-    //TODO change this
-    userBloc.playlists.removeAt(index);
+  removePlaylist(Playlist playlist) { //see if it is necessary
+    Map<String, dynamic> result = {};
+    List<Map<String, dynamic>> songs = [];
 
-    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+    for (Song song in playlist.songs) {
+      songs.add(song.toJson());
+    }
+
+    result.addAll({
+      "uid": playlist.uid,
+      "name": playlist.name,
+      "owner": playlist.owner,
+      "songs": songs,
+      "timestamp": playlist.timestamp,
+    });
+    firestore.collection("users").doc(userBloc.uid).update({
+      "playlists": FieldValue.arrayRemove([result])
+    });
   }
 
   ///public
@@ -311,6 +340,7 @@ class AuthManager {
   ];
 
   populateDb() async {
+    List<PlaylistSong> list = [];
     for (dynamic album in json) {
       for (dynamic music in album["t"]) {
         Map<String, dynamic> result = {};
@@ -322,9 +352,11 @@ class AuthManager {
           "artistUid": album["aU"]
         });
         // firestore.collection("musics").doc(music["uid"]).set(result);
-        addLikedSong(LikedSong(music["uid"], music["n"], music["d"], album["i"],
-            album["aN"], album["aU"], DateTime.now().toIso8601String()));
+        list.add(PlaylistSong(music["uid"], music["n"], music["d"], album["i"],
+            album["aN"], album["aU"]));
       }
     }
+    addPlaylist(Playlist("uid1", list, "festa da maria", "maria",
+        DateTime.now().toIso8601String()));
   }
 }
