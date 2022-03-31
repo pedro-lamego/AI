@@ -5,6 +5,8 @@ import 'package:myapp/aspects/widgets/TextFieldPretty.dart';
 import 'package:myapp/authentication/AuthManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:myapp/home/party/screens/QRCodeReader.dart';
+
 
 class JoinParty extends ConsumerWidget {
   static const route = '/joinParty';
@@ -29,7 +31,15 @@ class JoinParty extends ConsumerWidget {
                       color: Theme.of(context).hintColor, fontSize: 36),
                 ),
                 SizedBox(height: 50),
-                Text("QrCode Reader"),
+                PressedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => QRCodeReader()),
+                    );
+                  },
+                  child: Text("QrCode Reader"),
+                ),
                 SizedBox(height: 24),
                 PressedButton(
                   onPressed: () {}
