@@ -5,6 +5,9 @@ import 'package:myapp/home/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/home/party/screens/CreateParty.dart';
 import 'package:myapp/home/party/screens/JoinParty.dart';
+import 'package:myapp/home/party/screens/SearchSong.dart';
+import 'package:myapp/home/party/screens/ShowQRCode.dart';
+import 'package:myapp/home/party/screens/SugestedSongs.dart';
 import 'package:myapp/home/profile/screens/LikedSongs.dart';
 import 'package:myapp/home/profile/screens/PartyPlaylists.dart';
 import 'package:myapp/home/profile/screens/PartySongs.dart';
@@ -23,5 +26,8 @@ class RouterConfig {
     PartySongs.route: (context) => PartySongs(_args(context)),
     CreateParty.route: (_) => CreateParty(),
     JoinParty.route: (_) => JoinParty(),
+    ShowQRCode.route: (context) => ShowQRCode(_args(context)),
+    SugestedSongs.route: (context) => SugestedSongs(_args(context)),
+    SearchSong.route: (_) => SearchSong(),
   };
 }

@@ -16,6 +16,7 @@ Playlist _$PlaylistFromJson(Map<String, dynamic> json) {
     json['name'] as String,
     json['owner'] as String,
     json['timestamp'] as String,
+    json['isOpen'] as bool,
   );
 }
 
@@ -25,4 +26,5 @@ Map<String, dynamic> _$PlaylistToJson(Playlist instance) => <String, dynamic>{
       'name': instance.name,
       'owner': instance.owner,
       'timestamp': instance.timestamp,
+      'isOpen': instance.isOpen,
     };

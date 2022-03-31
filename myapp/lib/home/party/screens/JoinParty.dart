@@ -5,6 +5,7 @@ import 'package:myapp/aspects/widgets/TextFieldPretty.dart';
 import 'package:myapp/authentication/AuthManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:myapp/home/party/partyManager.dart';
 
 class JoinParty extends ConsumerWidget {
   static const route = '/joinParty';
@@ -32,11 +33,13 @@ class JoinParty extends ConsumerWidget {
                 Text("QrCode Reader"),
                 SizedBox(height: 24),
                 PressedButton(
-                  onPressed: () {}
-                  // ref
-                  // .read(partyManagerProvider)
-                  // .joinParty(context, nameController.text),
-                  ,
+                  onPressed: () {
+                    ref
+                        .read(partyManagerProvider)
+                        .joinPartyManager("qMDaBQS1zcc3Mn6a9uzS");
+                    Navigator.pop(context);
+                    return;
+                  },
                   child: Text("CONFIRM"),
                 ),
               ],

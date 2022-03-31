@@ -42,12 +42,10 @@ class CreateParty extends ConsumerWidget {
                 SizedBox(height: 24),
                 PressedButton(
                   onPressed: () {
-                    authManager.maybeWhen(
-                      data: (user) => ref
-                          .read(partyManagerProvider)
-                          .createParty(
-                              nameController.text, user.uid, DateTime.now()),
-                    );
+                    ref
+                        .read(partyManagerProvider)
+                        .createParty(nameController.text);
+                        Navigator.pop(context);
                     return;
                   },
                   child: Text("CONFIRM"),

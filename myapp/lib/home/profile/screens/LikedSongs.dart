@@ -37,14 +37,14 @@ class LikedSongs extends ConsumerWidget {
                 centerTitle: true,
               ),
             ),
-            _buildPlaylist(likedSongsList),
+            _buildSongs(likedSongsList),
           ],
         ),
       );
     });
   }
 
-  Widget _buildPlaylist(List<Song> likedSongs) => SliverToBoxAdapter(
+  Widget _buildSongs(List<Song> likedSongs) => SliverToBoxAdapter(
         child: likedSongs.length == 0
             ? const Center(
                 child: Padding(

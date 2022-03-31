@@ -39,13 +39,6 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
       emailController.text.isEmpty || passwordController.text.isEmpty;
 
   Future<void> login() async {
-    //   return authenticate(
-    //     (authManager) => authManager.signInUserAndPassFirebase(
-    //       context,
-    //       email: 'maria@maria.maria',
-    //       password: 'dengue',
-    //     ),
-    //   );
     if (fieldsAreEmpty) return;
     return authenticate(
       (authManager) => authManager.signInUserAndPassFirebase(
@@ -73,10 +66,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with Authentication {
                     // ignore: prefer_const_constructors
                     Expanded(
                       child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 30.0),
-                          child: Image.asset("assets/images/logo.jpeg"),
-                        ),
+                        child: Image.asset("assets/images/logo.jpeg", width: 300,),
                       ),
                     ),
                     TextFieldPretty(
