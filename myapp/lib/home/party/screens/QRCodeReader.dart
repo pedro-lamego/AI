@@ -67,7 +67,7 @@ class _ReaderState extends State <QRCodeReader> with SingleTickerProviderStateMi
             onDetect: (barcode, args) {
               final String code = barcode.rawValue;
               debugPrint('Barcode found! $code');
-              //TODO: exit scanner and send barcode to the previous page.
+              Navigator.pop(context, code);
             }));
   }
 }

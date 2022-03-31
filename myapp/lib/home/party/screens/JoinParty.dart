@@ -12,6 +12,8 @@ class JoinParty extends ConsumerWidget {
   static const route = '/joinParty';
   JoinParty({Key key}) : super(key: key);
 
+  String _QRcodeScanned='no party found';
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TapTo.unfocus(
@@ -31,14 +33,15 @@ class JoinParty extends ConsumerWidget {
                       color: Theme.of(context).hintColor, fontSize: 36),
                 ),
                 SizedBox(height: 50),
+                Text(
+                  _QRcodeScanned //this is where the party ID should be
+                ),
+                SizedBox(height: 50),
                 PressedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QRCodeReader()),
-                    );
+                   _awaitQRCodeScannerReturn(context);
                   },
-                  child: Text("QrCode Reader"),
+                  child: Text("QrCode Scanner"),
                 ),
                 SizedBox(height: 24),
                 PressedButton(
@@ -56,4 +59,14 @@ class JoinParty extends ConsumerWidget {
       ),
     );
   }
+  void _awaitQRCodeScannerReturn(BuildContext context) async {
+    final qRCode = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QRCodeReader()),
+    );
+    _QRcodeScanned = qRCode;
+    print('\n\n############this is the QRcode readed :' + _QRcodeScanned + '################\n\n\ ');
+  }
 }
+
+
