@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   after_layout: ^1.1.0
+  auto_size_text: ^3.0.0
   cloud_firestore: ^3.1.10
   cloud_functions: ^3.2.6
   connectivity: ^3.0.6
@@ -18,6 +19,7 @@ dependencies:
   firebase_storage: ^10.2.9
   outline_search_bar: ^2.3.0
   path_provider: ^2.0.2
+  qr_flutter: ^4.0.0
   random_avatar: ^0.0.5
   flutter:
     sdk: flutter

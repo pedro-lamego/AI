@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:myapp/authentication/authManager.dart';
+import 'package:myapp/home/party/partyManager.dart';
 import 'package:myapp/objects/music/LikedSong.dart';
 import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
@@ -9,8 +10,10 @@ import 'package:myapp/providers.dart';
 class SongsTile extends ConsumerStatefulWidget {
   final Song song;
   final bool isLikedSongs;
-
-  SongsTile(this.song, {this.isLikedSongs = true});
+  final bool addSong;
+  final bool voteSong;
+  SongsTile(this.song,
+      {this.isLikedSongs = true, this.addSong = false, this.voteSong = false});
 
   @override
   _SongsTileState createState() => _SongsTileState();
@@ -28,34 +31,90 @@ class _SongsTileState extends ConsumerState<SongsTile> {
               height: 80,
               child: Row(children: [
                 Container(
-                  child: Image.network(widget.song.srcImage),
                   width: 80,
                   height: 80,
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ClipRRect(
+                    child: Image.network(widget.song.srcImage),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.song.name,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        widget.song.artistName,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width -
+                        80 -
+                        16 -
+                        35 -
+                        20 -
+                        (widget.addSong ? 40 : 0) -
+                        (widget.voteSong ? 80 : 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AutoSizeText(
+                          widget.song.name,
+                          maxLines: 2,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
                         ),
-                      )
-                    ],
+                        AutoSizeText(
+                          widget.song.artistName,
+                          maxLines: 1,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Spacer(),
+                widget.voteSong
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: InkWell(
+                          child: Icon(
+                            Icons.arrow_upward,
+                            color: theme.primaryColor,
+                          ),
+                          onTap: () => ref
+                              .read(partyManagerProvider)
+                              .upvoteSong(widget.song.uid),
+                        ),
+                      )
+                    : Container(),
+                widget.voteSong
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: InkWell(
+                          child: Icon(
+                            Icons.arrow_downward,
+                            color: theme.primaryColor,
+                          ),
+                          onTap: () => ref
+                              .read(partyManagerProvider)
+                              .downvoteSong(widget.song.uid),
+                        ),
+                      )
+                    : Container(),
+                widget.addSong
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: InkWell(
+                          child: Icon(
+                            Icons.add,
+                            color: theme.primaryColor,
+                          ),
+                          onTap: () => ref
+                              .read(partyManagerProvider)
+                              .addSongToParty(widget.song),
+                        ),
+                      )
+                    : Container(),
                 Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: user.likedSongs.containsKey(widget.song.uid)
@@ -64,11 +123,9 @@ class _SongsTileState extends ConsumerState<SongsTile> {
                               Icons.star,
                               color: theme.primaryColor,
                             ),
-                            onTap: () {
-                              ref
-                                  .read(authManagerProvider)
-                                  .removeLikedSong(widget.song.uid);
-                            },
+                            onTap: () => ref
+                                .read(authManagerProvider)
+                                .removeLikedSong(widget.song.uid),
                           )
                         : InkWell(
                             child: Icon(

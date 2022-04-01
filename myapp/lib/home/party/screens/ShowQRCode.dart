@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/aspects/widgets/AppBarPretty.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ShowQRCode extends StatelessWidget {
   final String token;
@@ -25,7 +26,11 @@ class ShowQRCode extends StatelessWidget {
                     TextStyle(color: Theme.of(context).hintColor, fontSize: 36),
               ),
               SizedBox(height: 50),
-              //TODO put qrcode generator here with token
+              QrImage(
+                size:200,
+                data: token,
+                version: QrVersions.auto,
+              ),
               SizedBox(height: 24),
             ],
           ),

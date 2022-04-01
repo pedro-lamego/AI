@@ -5,6 +5,8 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/authentication/authManager.dart';
 import 'package:myapp/objects/music/Playlist.dart';
+import 'package:myapp/objects/music/PlaylistSong.dart';
+import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -38,7 +40,7 @@ class PartyManager {
         .doc(uid)
         .snapshots()
         .listen((snapshot) async {
-          print(snapshot.data());
+      print(snapshot.data());
       partyBloc = Playlist.fromJson(snapshot.data());
       partyBloc.uid = snapshot.id;
       _partyStream.add(partyBloc);
@@ -66,6 +68,27 @@ class PartyManager {
       joinPartyManager(result.id);
     } catch (err) {
       print(err.toString());
+    }
+  }
+
+  addSongToParty(Song song) {
+    if (partyBloc.songs.contains(song)) {
+      upvoteSong(song.uid);
+    } else {
+      firestore.collection("playlists").doc(partyBloc.uid).update({
+        "songs": FieldValue.arrayUnion([
+          {
+            "uid": song.uid,
+            "downvotes": 0,
+            "upvotes": 0,
+            "artistName": song.artistName,
+            "artistUid": song.artistUid,
+            "duration": song.duration,
+            "name": song.name,
+            "srcImage": song.srcImage,
+          }
+        ])
+      });
     }
   }
 

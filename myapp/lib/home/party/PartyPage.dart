@@ -60,7 +60,7 @@ class PartyPage extends ConsumerWidget {
                             padding: const EdgeInsets.only(top: 8),
                             itemCount: party.songs.length,
                             itemBuilder: (context, i) =>
-                                SongsTile(party.songs[i]),
+                                SongsTile(party.songs[i], voteSong: true,),
                           ),
                   ])),
       loading: () => CircularProgressIndicator(),

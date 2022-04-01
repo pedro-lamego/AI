@@ -1,7 +1,9 @@
 import 'package:after_layout/after_layout.dart';
+import 'package:myapp/authentication/authManager.dart';
 
 import 'package:myapp/home/HomePage.dart';
 import 'package:myapp/home/party/components/SearchBar.dart';
+import 'package:myapp/home/party/partyManager.dart';
 import 'package:myapp/home/profile/components/SongsTile.dart';
 import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
@@ -39,6 +41,7 @@ class _SearchSongState extends ConsumerState<SearchSong> with AfterLayoutMixin {
   @override
   Widget build(BuildContext context) {
     final songs = filter(ref.watch(musicProvider));
+    final user = ref.watch(authManagerProvider);
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.backgroundColor,
@@ -56,7 +59,8 @@ class _SearchSongState extends ConsumerState<SearchSong> with AfterLayoutMixin {
                 : ListView.builder(
                     padding: EdgeInsets.only(top: searchBarHeight),
                     itemCount: songs.length,
-                    itemBuilder: (context, i) => SongsTile(songs[i]), //Playlist Song Tile
+                    itemBuilder: (context, i) =>
+                        SongsTile(songs[i], addSong: true), //Playlist Song Tile
                   ),
           Padding(
             key: searchBarKey,
