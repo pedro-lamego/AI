@@ -12,7 +12,9 @@ class JoinParty extends ConsumerWidget {
   static const route = '/joinParty';
   JoinParty({Key key}) : super(key: key);
 
-  String _QRcodeScanned='no party found';
+  final nameController = TextEditingController();
+
+  String _QRcodeScanned = 'no party found';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
