@@ -14,8 +14,8 @@ PlaylistSong _$PlaylistSongFromJson(Map<String, dynamic> json) {
     json['srcImage'],
     json['artistName'],
     json['artistUid'],
-    upvotes: json['upvotes'] as int,
-    downvotes: json['downvotes'] as int,
+    (json['upvotes'] as List)?.map((e) => e as String)?.toList(),
+    (json['downvotes'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 

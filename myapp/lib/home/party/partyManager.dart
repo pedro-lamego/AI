@@ -73,14 +73,14 @@ class PartyManager {
 
   addSongToParty(Song song) {
     if (partyBloc.songs.contains(song)) {
-      upvoteSong(song.uid);
+      upvoteSong(authManager.userBloc.uid, song.uid);
     } else {
       firestore.collection("playlists").doc(partyBloc.uid).update({
         "songs": FieldValue.arrayUnion([
           {
             "uid": song.uid,
-            "downvotes": 0,
-            "upvotes": 0,
+            "downvotes": [],
+            "upvotes": [],
             "artistName": song.artistName,
             "artistUid": song.artistUid,
             "duration": song.duration,
@@ -92,26 +92,16 @@ class PartyManager {
     }
   }
 
-  upvoteSong(String songUid) async {
-    try {
-      HttpsCallableResult result = await FirebaseFunctions.instance
-          .httpsCallable("upvote")
-          .call({"songUid": songUid, "partyUid": partyBloc.uid});
-    } catch (err) {
-      print(err.toString());
-      //!
-    }
+  upvoteSong(String userUid, String songUid) async {
+    HttpsCallableResult result = await FirebaseFunctions.instance
+        .httpsCallable("upvote")
+        .call({"songUid": userUid, "songUid": songUid});
   }
 
-  downvoteSong(String songUid) async {
-    try {
-      HttpsCallableResult result = await FirebaseFunctions.instance
-          .httpsCallable("downvote")
-          .call({"songUid": songUid, "partyUid": partyBloc.uid});
-    } catch (err) {
-      print(err.toString());
-      //todo barra
-    }
+  downvoteSong(String userUid, String songUid) async {
+    HttpsCallableResult result = await FirebaseFunctions.instance
+        .httpsCallable("downvote")
+        .call({"songUid": userUid, "songUid": songUid});
   }
 
   joinPartyManager(String partyUid) async {

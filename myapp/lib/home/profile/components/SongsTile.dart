@@ -12,8 +12,14 @@ class SongsTile extends ConsumerStatefulWidget {
   final bool isLikedSongs;
   final bool addSong;
   final bool voteSong;
+  final int upvotes;
+  final int downvotes;
   SongsTile(this.song,
-      {this.isLikedSongs = true, this.addSong = false, this.voteSong = false});
+      {this.isLikedSongs = true,
+      this.addSong = false,
+      this.voteSong = false,
+      this.upvotes,
+      this.downvotes});
 
   @override
   _SongsTileState createState() => _SongsTileState();
@@ -77,13 +83,22 @@ class _SongsTileState extends ConsumerState<SongsTile> {
                     ? Padding(
                         padding: const EdgeInsets.only(right: 15.0),
                         child: InkWell(
-                          child: Icon(
-                            Icons.arrow_upward,
-                            color: theme.primaryColor,
-                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_upward,
+                                  color: theme.primaryColor,
+                                ),
+                                Text(
+                                  widget.upvotes.toString(),
+                                  style: TextStyle(
+                                      color: theme.primaryColor, fontSize: 12),
+                                )
+                              ]),
                           onTap: () => ref
                               .read(partyManagerProvider)
-                              .upvoteSong(widget.song.uid),
+                              .upvoteSong(user.uid, widget.song.uid),
                         ),
                       )
                     : Container(),
@@ -91,13 +106,22 @@ class _SongsTileState extends ConsumerState<SongsTile> {
                     ? Padding(
                         padding: const EdgeInsets.only(right: 15.0),
                         child: InkWell(
-                          child: Icon(
-                            Icons.arrow_downward,
-                            color: theme.primaryColor,
-                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_downward,
+                                  color: theme.primaryColor,
+                                ),
+                                Text(
+                                  widget.downvotes.toString(),
+                                  style: TextStyle(
+                                      color: theme.primaryColor, fontSize: 12),
+                                )
+                              ]),
                           onTap: () => ref
                               .read(partyManagerProvider)
-                              .downvoteSong(widget.song.uid),
+                              .downvoteSong(user.uid, widget.song.uid),
                         ),
                       )
                     : Container(),

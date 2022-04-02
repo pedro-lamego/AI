@@ -5,11 +5,11 @@ part 'PlaylistSong.g.dart';
 
 @JsonSerializable()
 class PlaylistSong extends Song {
-  final int upvotes;
-  final int downvotes;
+  List<String> upvotes = [];
+  List<String> downvotes = [];
 
   PlaylistSong(uid, name, duration, srcImage, artistName, artistUid,
-      {this.upvotes = 0, this.downvotes = 0})
+      this.upvotes, this.downvotes)
       : super(uid, name, duration, srcImage, artistName, artistUid);
 
   factory PlaylistSong.fromJson(Map<String, dynamic> json) =>
