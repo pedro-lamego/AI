@@ -73,7 +73,7 @@ class PartyManager {
 
   addSongToParty(Song song) {
     if (partyBloc.songs.contains(song)) {
-      upvoteSong(authManager.userBloc.uid, song.uid);
+      upvoteSong(song.uid);
     } else {
       firestore.collection("playlists").doc(partyBloc.uid).update({
         "songs": FieldValue.arrayUnion([
@@ -92,16 +92,16 @@ class PartyManager {
     }
   }
 
-  upvoteSong(String userUid, String songUid) async {
+  upvoteSong(String songUid) async {
     HttpsCallableResult result = await FirebaseFunctions.instance
         .httpsCallable("upvote")
-        .call({"songUid": userUid, "songUid": songUid});
+        .call({"playlistUid": partyBloc.uid, "songUid": songUid});
   }
 
-  downvoteSong(String userUid, String songUid) async {
+  downvoteSong(String songUid) async {
     HttpsCallableResult result = await FirebaseFunctions.instance
         .httpsCallable("downvote")
-        .call({"songUid": userUid, "songUid": songUid});
+        .call({"playlistUid": partyBloc.uid, "songUid": songUid});
   }
 
   joinPartyManager(String partyUid) async {

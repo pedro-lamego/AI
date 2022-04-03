@@ -26,46 +26,48 @@ class PartyPage extends ConsumerWidget {
           : party.maybeWhen(
               orElse: () => Container(color: Colors.green),
               loading: () => CircularProgressIndicator(),
-              data: (party) => Column(children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 6.0),
-                      child: Row(
-                        children: [
-                          Text(party.name,
-                              style: TextStyle(
-                                  color: theme.hintColor,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w600)),
-                          Spacer(),
-                          Dropdown(user.uid == party.owner)
-                        ],
+              data: (party) => SingleChildScrollView(
+                    child: Column(children: [
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    party.songs.length == 0
-                        ? const Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 220.0),
-                              child: Text(
-                                "There are no songs in queue",
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 6.0),
+                        child: Row(
+                          children: [
+                            Text(party.name,
+                                style: TextStyle(
+                                    color: theme.hintColor,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w600)),
+                            Spacer(),
+                            Dropdown(user.uid == party.owner)
+                          ],
+                        ),
+                      ),
+                      party.songs.length == 0
+                          ? const Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 220.0),
+                                child: Text(
+                                  "There are no songs in queue",
+                                ),
                               ),
+                            )
+                          : ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(top: 8),
+                              itemCount: party.songs.length,
+                              itemBuilder: (context, i) => SongsTile(
+                                  party.songs[i],
+                                  voteSong: true,
+                                  upvotes: party.songs[i].upvotes.length,
+                                  downvotes: party.songs[i].downvotes.length),
                             ),
-                          )
-                        : ListView.builder(
-                            primary: false,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.only(top: 8),
-                            itemCount: party.songs.length,
-                            itemBuilder: (context, i) => SongsTile(
-                                party.songs[i],
-                                voteSong: true,
-                                upvotes: party.songs[i].upvotes.length,
-                                downvotes: party.songs[i].downvotes.length),
-                          ),
-                  ])),
+                    ]),
+                  )),
       loading: () => CircularProgressIndicator(),
       orElse: () => Container(
         color: Colors.red,

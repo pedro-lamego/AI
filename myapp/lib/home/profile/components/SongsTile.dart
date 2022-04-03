@@ -98,7 +98,7 @@ class _SongsTileState extends ConsumerState<SongsTile> {
                               ]),
                           onTap: () => ref
                               .read(partyManagerProvider)
-                              .upvoteSong(user.uid, widget.song.uid),
+                              .upvoteSong(widget.song.uid),
                         ),
                       )
                     : Container(),
@@ -121,7 +121,7 @@ class _SongsTileState extends ConsumerState<SongsTile> {
                               ]),
                           onTap: () => ref
                               .read(partyManagerProvider)
-                              .downvoteSong(user.uid, widget.song.uid),
+                              .downvoteSong(widget.song.uid),
                         ),
                       )
                     : Container(),
