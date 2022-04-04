@@ -31,7 +31,7 @@ exports.upvote = functions.https.onCall(async (data, context) => {
 
             playlistData.songs[i].upvotes.push(context.auth.uid);
 
-            playlistData.songs[i].downvotes.filter(function (value) { return value !== context.auth.uid });
+            playlistData.songs[i].downvotes = playlistData.songs[i].downvotes.filter(function (value) { return value !== context.auth.uid });
 
             admin.firestore().collection('playlists').doc(data.playlistUid).set(playlistData);
             return;
@@ -68,7 +68,7 @@ exports.downvote = functions.https.onCall(async (data, context) => {
 
             playlistData.songs[i].downvotes.push(context.auth.uid);
 
-            playlistData.songs[i].upvotes.filter(function (value) { return value !== context.auth.uid });
+            playlistData.songs[i].upvotes = playlistData.songs[i].upvotes.filter(function (value) { return value !== context.auth.uid });
 
             admin.firestore().collection('playlists').doc(data.playlistUid).set(playlistData);
             return;

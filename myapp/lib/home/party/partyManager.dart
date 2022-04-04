@@ -72,7 +72,9 @@ class PartyManager {
   }
 
   addSongToParty(Song song) {
-    if (partyBloc.songs.contains(song)) {
+    if (partyBloc.songs
+            .firstWhere((element) => element.uid == song.uid, orElse: null) !=
+        null) {
       upvoteSong(song.uid);
     } else {
       firestore.collection("playlists").doc(partyBloc.uid).update({
@@ -131,9 +133,10 @@ class PartyManager {
   changeQueue() {}
 
   playSong(String songUid) async {
-    HttpsCallableResult result = await FirebaseFunctions.instance
-        .httpsCallable("playSong")
-        .call({"songUid": songUid,});
+    HttpsCallableResult result =
+        await FirebaseFunctions.instance.httpsCallable("playSong").call({
+      "songUid": songUid,
+    });
   }
 
   stopSong(String songUid) async {
