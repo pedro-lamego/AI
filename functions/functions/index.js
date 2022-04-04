@@ -23,8 +23,8 @@ exports.upvote = functions.https.onCall(async (data, context) => {
 
     for (var i = 0; i < playlistData.songs.length; i++) {
         if (playlistData.songs[i].uid === data.songUid) {
-            for (uid in playlistData.songs[i].upvotes) {
-                if (uid === context.auth.uid) {
+            for (var j = 0; j < playlistData.songs[i].upvotes.length; j++) {
+                if (playlistData.songs[i].upvotes[j] === context.auth.uid) {
                     return;
                 }
             }
@@ -59,8 +59,9 @@ exports.downvote = functions.https.onCall(async (data, context) => {
 
     for (var i = 0; i < playlistData.songs.length; i++) {
         if (playlistData.songs[i].uid === data.songUid) {
-            for (uid in playlistData.songs[i].downvotes) {
-                if (uid === context.auth.uid) {
+            for (var j = 0; playlistData.songs[i].downvotes.length; j++) {
+                if (playlistData.songs[i].downvotes[j] === context.auth.uid) {
+                    console.log("entrou");
                     return;
                 }
             }
@@ -75,7 +76,9 @@ exports.downvote = functions.https.onCall(async (data, context) => {
     }
 });
 
-exports.playSong = functions.https.onCall(async (data, context) => { });
+exports.playSong = functions.https.onCall(async (data, context) => { 
+
+});
 
 exports.stopSong = functions.https.onCall(async (data, context) => { });
 

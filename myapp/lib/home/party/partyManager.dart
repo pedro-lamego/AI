@@ -133,7 +133,7 @@ class PartyManager {
   playSong(String songUid) async {
     HttpsCallableResult result = await FirebaseFunctions.instance
         .httpsCallable("playSong")
-        .call({"songUid": songUid});
+        .call({"songUid": songUid,});
   }
 
   stopSong(String songUid) async {
