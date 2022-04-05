@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/objects/music/Playlist.dart';
+import 'package:myapp/objects/music/PlaylistUser.dart';
 
 class PlaylistTile extends ConsumerWidget {
-  final Playlist playlist;
+  final PlaylistUser playlist;
   final int index;
   final VoidCallback onTap;
   PlaylistTile(this.playlist, this.index, this.onTap);

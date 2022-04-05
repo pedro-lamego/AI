@@ -19,7 +19,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
     ),
     (json['playlists'] as List)
         ?.map((e) =>
-            e == null ? null : Playlist.fromJson(e as Map<String, dynamic>))
+            e == null ? null : PlaylistUser.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }

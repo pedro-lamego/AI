@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:myapp/objects/music/LikedSong.dart';
 import 'package:myapp/objects/music/Playlist.dart';
-import 'package:myapp/objects/music/Song.dart';
+import 'package:myapp/objects/music/PlaylistUser.dart';
 
 part 'Profile.g.dart';
 
@@ -14,7 +14,7 @@ class Profile {
   String email;
   String playlistToken;
   String spotifyToken;
-  List<Playlist> playlists;
+  List<PlaylistUser> playlists;
   Map<String, LikedSong> likedSongs;
 
   // @JsonKey(ignore: true) TODO put image in profile
