@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -139,9 +140,40 @@ class PartyManager {
     });
   }
 
-  stopSong(String songUid) async {
+  stopSong() async {
     HttpsCallableResult result = await FirebaseFunctions.instance
         .httpsCallable("stopSong")
-        .call({"songUid": songUid});
+        .call();
+  }
+
+  Future<List<Song>> sugestedSongs() async {
+    List<String> artistList = [];
+    List<Song> songList = [];
+    if (partyBloc.songs.length > 2) {
+      List<Song> songListAux = partyBloc.songs;
+      songListAux.shuffle();
+
+      final random = Random();
+
+      int i = random.nextInt(songListAux.length ~/ 2);
+      int j = random.nextInt(
+              songListAux.length ~/ 2 + (songListAux.length % 2 == 0 ? 0 : 1)) +
+          (songListAux.length ~/ 2);
+
+      for (; i <= j; i++) {
+        artistList.add(songListAux[i].artistUid);
+      }
+    } else {
+      return [];
+    }
+
+    HttpsCallableResult result = await FirebaseFunctions.instance
+        .httpsCallable("sugestedSongs")
+        .call({"artistList": artistList});
+    for (dynamic song in result.data) {
+      songList.add(Song(song.uid, song.name, song.duration, song.srcImage,
+          song.artistName, song.artistUid));
+    }
+    return songList;
   }
 }

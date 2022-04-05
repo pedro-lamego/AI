@@ -40,7 +40,7 @@ class SugestedSongs extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: 220.0),
                   child: Text(
-                    "There are no sugested songs",
+                    "There are no sugested songs, check if party has more than 3 songs",
                   ),
                 ),
               )
@@ -49,9 +49,10 @@ class SugestedSongs extends StatelessWidget {
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(top: 8),
                 itemCount: songs.length,
-                itemBuilder: (context, i) => SongsTile(songs[i]),
+                itemBuilder: (context, i) => SongsTile(
+                  songs[i],
+                  addSong: true,
+                ),
               ),
-        // loading: () =>
-        //     LoadingIndicator(indicatorType: Indicator.circleStrokeSpin),
       );
 }

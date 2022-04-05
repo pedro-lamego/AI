@@ -5,7 +5,7 @@ import 'package:myapp/home/party/partyManager.dart';
 import 'package:myapp/home/party/screens/SearchSong.dart';
 import 'package:myapp/home/party/screens/ShowQRCode.dart';
 import 'package:myapp/home/party/screens/SugestedSongs.dart';
-
+import 'package:myapp/objects/music/Song.dart';
 
 class Dropdown extends ConsumerStatefulWidget {
   final bool isAdmin;
@@ -30,7 +30,7 @@ class _DropdownState extends ConsumerState<Dropdown> {
           size: 32,
           color: theme.primaryColor,
         ),
-        customItemsIndexes: widget.isAdmin ? [3] : [2],
+        customItemsIndexes: widget.isAdmin ? [4] : [3],
         customItemsHeight: 8,
         items: [
           ...list.map(
@@ -69,16 +69,12 @@ class MenuItem {
 }
 
 class MenuItems {
-  static const List<MenuItem> generalItems = [leave, sugested, search];
-  static const List<MenuItem> adminItems = [
-    sugested,
-    qrcode,
-    // finish,
-    search,
-    leave
-  ]; //TODO remove leave from this list
+  static const List<MenuItem> generalItems = [search, sugested, leave];
+  static const List<MenuItem> adminItems = [search, sugested, qrcode, finish];
 
-  static const leave = MenuItem(text: 'Leave Party');
+  static const leave = MenuItem(
+    text: 'Leave Party',
+  );
   static const sugested = MenuItem(
     text: 'Sugested Songs',
   );
@@ -102,7 +98,7 @@ class MenuItems {
     );
   }
 
-  static onChanged(BuildContext context, MenuItem item, WidgetRef ref) {
+  static onChanged(BuildContext context, MenuItem item, WidgetRef ref) async{
     PartyManager partyManager = ref.read(partyManagerProvider);
     switch (item) {
       case MenuItems.leave:
@@ -112,8 +108,9 @@ class MenuItems {
         partyManager.stopParty();
         break;
       case MenuItems.sugested:
+        List<Song> songs = await partyManager.sugestedSongs();
         Navigator.pushNamed(context, SugestedSongs.route,
-            arguments: partyManager.partyBloc.songs);
+            arguments: songs);
         break;
       case MenuItems.qrcode:
         Navigator.pushNamed(context, ShowQRCode.route,
