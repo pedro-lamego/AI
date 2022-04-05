@@ -25,7 +25,7 @@ class PartyManager {
   Playlist partyBloc;
   bool _firstTime = true;
 
-  StreamSubscription<DocumentSnapshot> partyStreamSubscription;
+  StreamSubscription<QuerySnapshot> partyStreamSubscription;
 
   BehaviorSubject<Playlist> _partyStream = BehaviorSubject<Playlist>();
   Stream<Playlist> get party => _partyStream.stream;
@@ -34,22 +34,52 @@ class PartyManager {
 
   setUpPartyStream(String uid) async {
     if (!_firstTime) {
+      await partyStreamSubscription.cancel();
+      await _partyStream.close();
       _partyStream = BehaviorSubject<Playlist>();
     }
+    DocumentSnapshot<Map<String, dynamic>> party =
+        await firestore.collection("playlists").doc(uid).get();
+    print(party.data()["uid"]);
+    partyBloc = Playlist(
+        party.data()["uid"],
+        {},
+        party.data()["name"],
+        party.data()["timestamp"],
+        party.data()["owner"],
+        party.data()["isOpen"]); //handle restaurant
+
     partyStreamSubscription = firestore
         .collection("playlists")
         .doc(uid)
+        .collection("songs")
         .snapshots()
         .listen((snapshot) async {
-      print(snapshot.data());
-      partyBloc = Playlist.fromJson(snapshot.data());
-      partyBloc.uid = snapshot.id;
-      _partyStream.add(partyBloc);
-      if (partyBloc.isOpen == false) {
-        print("vim daqui");
-        partyStopped();
+      for (DocumentChange docChange in snapshot.docChanges) {
+        if (docChange.type == DocumentChangeType.added) {
+          addSongToStream(docChange.doc);
+        }
+        if (docChange.type == DocumentChangeType.modified) {
+          editSongToStream(docChange.doc);
+        }
       }
+      _partyStream.add(partyBloc);
+      // if (partyBloc.isOpen == false) {
+      //   partyStopped();
+      // } see what to do with the admin party maybe handle restaurants
     });
+  }
+
+  addSongToStream(DocumentSnapshot<Object> doc) {
+    PlaylistSong song = PlaylistSong.fromJson(doc.data());
+    partyBloc.songs.addAll({doc.id: song});
+  }
+
+  editSongToStream(DocumentSnapshot<Object> doc) {
+    print(doc);
+    PlaylistSong song = PlaylistSong.fromJson(doc.data());
+    partyBloc.songs[doc.id].downvotes = song.downvotes;
+    partyBloc.songs[doc.id].upvotes = song.upvotes;
   }
   // General Functions
 
@@ -60,11 +90,11 @@ class PartyManager {
       await firestore.collection("playlists").doc(result.id).set({
         "owner": authManager.userBloc.uid,
         "timestamp": DateTime.now().toIso8601String(),
-        "songs": [],
         "name": name,
         "isOpen": true,
         "uid": result.id,
       });
+      //TODO tratar da collection songs if necessary
 
       joinPartyManager(result.id);
     } catch (err) {
@@ -73,24 +103,24 @@ class PartyManager {
   }
 
   addSongToParty(Song song) {
-    if (partyBloc.songs
-            .firstWhere((element) => element.uid == song.uid, orElse: null) !=
-        null) {
+    if (partyBloc.songs.containsKey(song.uid)) {
       upvoteSong(song.uid);
     } else {
-      firestore.collection("playlists").doc(partyBloc.uid).update({
-        "songs": FieldValue.arrayUnion([
-          {
-            "uid": song.uid,
-            "downvotes": [],
-            "upvotes": [],
-            "artistName": song.artistName,
-            "artistUid": song.artistUid,
-            "duration": song.duration,
-            "name": song.name,
-            "srcImage": song.srcImage,
-          }
-        ])
+      firestore
+          .collection("playlists")
+          .doc(partyBloc.uid)
+          .collection("songs")
+          .doc(song.uid)
+          .set({
+        "uid": song.uid,
+        "downvotes": [],
+        "upvotes": [],
+        "artistName": song.artistName,
+        "artistUid": song.artistUid,
+        "duration": song.duration,
+        "name": song.name,
+        "srcImage": song.srcImage,
+        "timestamp": DateTime.now().toIso8601String()
       });
     }
   }
@@ -113,13 +143,9 @@ class PartyManager {
   }
 
   partyStopped() async {
-    print("entrei");
     authManager.addPlaylist(partyBloc);
     authManager.kickParty();
-    await partyStreamSubscription?.cancel();
-    await _partyStream?.close();
     _firstTime = false;
-    partyBloc = null;
   }
 
   // Admin Functions
@@ -141,16 +167,18 @@ class PartyManager {
   }
 
   stopSong() async {
-    HttpsCallableResult result = await FirebaseFunctions.instance
-        .httpsCallable("stopSong")
-        .call();
+    HttpsCallableResult result =
+        await FirebaseFunctions.instance.httpsCallable("stopSong").call();
   }
 
   Future<List<Song>> sugestedSongs() async {
     List<String> artistList = [];
     List<Song> songList = [];
+    List<Song> songListAux = [];
     if (partyBloc.songs.length > 2) {
-      List<Song> songListAux = partyBloc.songs;
+      partyBloc.songs.forEach((_, value) {
+        songListAux.add(value);
+      });
       songListAux.shuffle();
 
       final random = Random();

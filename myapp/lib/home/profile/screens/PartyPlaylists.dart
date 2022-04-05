@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/home/profile/components/PlaylistTile.dart';
 import 'package:myapp/home/profile/screens/PartySongs.dart';
 import 'package:myapp/objects/music/Playlist.dart';
+import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
 
 class PartyPlaylists extends ConsumerWidget {
@@ -48,9 +49,17 @@ class PartyPlaylists extends ConsumerWidget {
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(top: 8),
                 itemCount: playlists.length,
-                itemBuilder: (context, i) =>
-                    PlaylistTile(playlists[i], i, () => Navigator.pushNamed(context, PartySongs.route, arguments: playlists[i].songs)),
-              ),
+                itemBuilder: (context, i) {
+                  List<Song> songs = [];
+                  playlists[i].songs.forEach((key, value) {
+                    songs.add(value);
+                  });
+                  PlaylistTile(
+                      playlists[i],
+                      i,
+                      () => Navigator.pushNamed(context, PartySongs.route,
+                          arguments: songs));
+                }),
         // loading: () =>
         //     LoadingIndicator(indicatorType: Indicator.circleStrokeSpin),
       );

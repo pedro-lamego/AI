@@ -40,7 +40,7 @@ class SugestedSongs extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: 220.0),
                   child: Text(
-                    "There are no sugested songs, check if party has more than 3 songs",
+                    "There are no sugested songs,\n check if party has more than 3 songs",
                   ),
                 ),
               )

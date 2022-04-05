@@ -7,13 +7,14 @@ part 'Playlist.g.dart';
 @JsonSerializable()
 class Playlist {
   String uid;
-  List<PlaylistSong> songs;
-  final String name;
-  final String owner;
-  final String timestamp;
+  Map<String, PlaylistSong> songs;
+  String name;
+  String owner;
+  String timestamp;
   bool isOpen;
 
-  Playlist(this.uid, this.songs, this.name, this.owner, this.timestamp, this.isOpen);
+  Playlist(
+      this.uid, this.songs, this.name, this.owner, this.timestamp, this.isOpen);
 
   factory Playlist.fromJson(Map<String, dynamic> json) =>
       _$PlaylistFromJson(json);

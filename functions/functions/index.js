@@ -17,27 +17,25 @@ exports.upvote = functions.https.onCall(async (data, context) => {
         );
     }
 
-    let playlist = await admin.firestore().collection('playlists').doc(data.playlistUid).get();
+    let playlist = await admin.firestore().collection('playlists').doc(data.playlistUid).collection("songs").doc(data.songUid).get();
 
     let playlistData = playlist.data();
 
-    for (var i = 0; i < playlistData.songs.length; i++) {
-        if (playlistData.songs[i].uid === data.songUid) {
-            for (var j = 0; j < playlistData.songs[i].upvotes.length; j++) {
-                if (playlistData.songs[i].upvotes[j] === context.auth.uid) {
-                    return;
-                }
-            }
 
-            playlistData.songs[i].upvotes.push(context.auth.uid);
-
-            playlistData.songs[i].downvotes = playlistData.songs[i].downvotes.filter(function (value) { return value !== context.auth.uid });
-
-            admin.firestore().collection('playlists').doc(data.playlistUid).set(playlistData);
+    for (var j = 0; j < playlistData.upvotes.length; j++) {
+        if (playlistData.upvotes[j] === context.auth.uid) {
             return;
-
         }
     }
+
+    playlistData.upvotes.push(context.auth.uid);
+
+    playlistData.downvotes = playlistData.downvotes.filter(function (value) { return value !== context.auth.uid });
+
+    admin.firestore().collection('playlists').doc(data.playlistUid).collection("songs").doc(data.songUid).set(playlistData);
+    return;
+
+
 });
 
 exports.downvote = functions.https.onCall(async (data, context) => {
@@ -53,30 +51,27 @@ exports.downvote = functions.https.onCall(async (data, context) => {
             'only authenticated users can add requests'
         );
     }
-    let playlist = await admin.firestore().collection('playlists').doc(data.playlistUid).get();
+    let playlist = await admin.firestore().collection('playlists').doc(data.playlistUid).collection("songs").doc(data.songUid).get();
 
     let playlistData = playlist.data();
 
-    for (var i = 0; i < playlistData.songs.length; i++) {
-        if (playlistData.songs[i].uid === data.songUid) {
-            for (var j = 0; playlistData.songs[i].downvotes.length; j++) {
-                if (playlistData.songs[i].downvotes[j] === context.auth.uid) {
-                    console.log("entrou");
-                    return;
-                }
-            }
 
-            playlistData.songs[i].downvotes.push(context.auth.uid);
-
-            playlistData.songs[i].upvotes = playlistData.songs[i].upvotes.filter(function (value) { return value !== context.auth.uid });
-
-            admin.firestore().collection('playlists').doc(data.playlistUid).set(playlistData);
+    for (var j = 0; playlistData.downvotes.length; j++) {
+        if (playlistData.downvotes[j] === context.auth.uid) {
             return;
         }
     }
+
+    playlistData.downvotes.push(context.auth.uid);
+
+    playlistData.upvotes = playlistData.upvotes.filter(function (value) { return value !== context.auth.uid });
+
+    admin.firestore().collection('playlists').doc(data.playlistUid).collection("songs").doc(data.songUid).set(playlistData);
+    return;
+
 });
 
-exports.playSong = functions.https.onCall(async (data, context) => { 
+exports.playSong = functions.https.onCall(async (data, context) => {
 
 });
 

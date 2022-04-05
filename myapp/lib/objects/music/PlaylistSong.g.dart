@@ -16,6 +16,7 @@ PlaylistSong _$PlaylistSongFromJson(Map<String, dynamic> json) {
     json['artistUid'],
     (json['upvotes'] as List)?.map((e) => e as String)?.toList(),
     (json['downvotes'] as List)?.map((e) => e as String)?.toList(),
+    json['timestamp'] as String,
   );
 }
 
@@ -29,4 +30,5 @@ Map<String, dynamic> _$PlaylistSongToJson(PlaylistSong instance) =>
       'artistUid': instance.artistUid,
       'upvotes': instance.upvotes,
       'downvotes': instance.downvotes,
+      'timestamp': instance.timestamp,
     };

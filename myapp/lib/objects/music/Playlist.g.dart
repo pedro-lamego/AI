@@ -9,10 +9,10 @@ part of 'Playlist.dart';
 Playlist _$PlaylistFromJson(Map<String, dynamic> json) {
   return Playlist(
     json['uid'] as String,
-    (json['songs'] as List)
-        ?.map((e) =>
-            e == null ? null : PlaylistSong.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['songs'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k,
+          e == null ? null : PlaylistSong.fromJson(e as Map<String, dynamic>)),
+    ),
     json['name'] as String,
     json['owner'] as String,
     json['timestamp'] as String,

@@ -160,11 +160,11 @@ class AuthManager {
 
   addPlaylist(Playlist playlist) {
     Map<String, dynamic> result = {};
-    List<Map<String, dynamic>> songs = [];
+    Map<String, dynamic> songs = {};
 
-    for (Song song in playlist.songs) {
-      songs.add(song.toJson());
-    }
+    playlist.songs.forEach((key, value) {
+      songs.addAll({key : value.toJson()});
+    });
 
     result.addAll({
       "uid": playlist.uid,
@@ -177,27 +177,6 @@ class AuthManager {
     print(result);
     firestore.collection("users").doc(userBloc.uid).update({
       "playlists": FieldValue.arrayUnion([result])
-    });
-  }
-
-  removePlaylist(Playlist playlist) {
-    //see if it is necessary
-    Map<String, dynamic> result = {};
-    List<Map<String, dynamic>> songs = [];
-
-    for (Song song in playlist.songs) {
-      songs.add(song.toJson());
-    }
-
-    result.addAll({
-      "uid": playlist.uid,
-      "name": playlist.name,
-      "owner": playlist.owner,
-      "songs": songs,
-      "timestamp": playlist.timestamp,
-    });
-    firestore.collection("users").doc(userBloc.uid).update({
-      "playlists": FieldValue.arrayRemove([result])
     });
   }
 

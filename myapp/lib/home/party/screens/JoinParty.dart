@@ -1,3 +1,4 @@
+// import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:myapp/aspects/widgets/AppBarPretty.dart';
 import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/aspects/widgets/TapTo.dart';
@@ -7,12 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/home/party/partyManager.dart';
 
-class JoinParty extends ConsumerWidget {
+class JoinParty extends ConsumerStatefulWidget {
   static const route = '/joinParty';
   JoinParty({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _JoinPartyState createState() => _JoinPartyState();
+}
+
+class _JoinPartyState extends ConsumerState<JoinParty>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
     return TapTo.unfocus(
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -30,13 +37,20 @@ class JoinParty extends ConsumerWidget {
                       color: Theme.of(context).hintColor, fontSize: 36),
                 ),
                 SizedBox(height: 50),
-                Text("QrCode Reader"),
+                // MobileScanner(onDetect: (barcode, args) {
+                //   final String code = barcode.rawValue;
+
+                //   print(code);
+                //   if (code != null)
+                //     ref.read(partyManagerProvider).joinPartyManager(code);
+                //   Navigator.pop(context);
+                // }),
                 SizedBox(height: 24),
                 PressedButton(
                   onPressed: () {
                     ref
                         .read(partyManagerProvider)
-                        .joinPartyManager("qMDaBQS1zcc3Mn6a9uzS");
+                        .joinPartyManager("xcgAgeWnvX67sg9P2p1y");
                     Navigator.pop(context);
                     return;
                   },
