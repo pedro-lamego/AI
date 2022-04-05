@@ -6,31 +6,20 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       body: Center(
-        child: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                Color(0xFFE45826),
-                Color(0xFFF0A500),
-                Colors.yellow, //change this color
-              ])),
-          height: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top,
-          child: const Center(
+          child: Container(
+            width: 50,
             child: LoadingIndicator(
-              colors: [
-                Color(0xFFE45826),
-              ],
-              indicatorType: Indicator.ballBeat,
-              strokeWidth: 50,
-            ),
-          ),
-        ),
+        colors: [
+            theme.primaryColor,
+        ],
+        indicatorType: Indicator.ballBeat,
+        strokeWidth: 20,
       ),
+          )),
     );
   }
 }
