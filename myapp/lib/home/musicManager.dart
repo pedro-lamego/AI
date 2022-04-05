@@ -16,14 +16,14 @@ class MusicManager {
   get userStream => _read(userStreamProvider);
   FirebaseFirestore get firestore => _read(firestoreProvider);
 
-  List<Song> musicBloc;
+  List<Song> musicBloc = [];
 
   final _musicStream = BehaviorSubject<List<Song>>();
   Stream<List<Song>> get music => _musicStream.stream;
 
   MusicManager(this._read);
 
-  setUpMusicStream(String uid) {
+  setUpMusicStream() {
     firestore.collection("musics").snapshots().listen((snapshot) async {
       for (DocumentChange MusicChange in snapshot.docChanges) {
         if (MusicChange.type == DocumentChangeType.added) {
@@ -32,6 +32,7 @@ class MusicManager {
       }
       _musicStream.add(musicBloc);
     });
+    print(musicBloc.length);
   }
 
   // General Functions

@@ -1,3 +1,4 @@
+// import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:myapp/aspects/widgets/AppBarPretty.dart';
 import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/aspects/widgets/TapTo.dart';
@@ -5,19 +6,20 @@ import 'package:myapp/aspects/widgets/TextFieldPretty.dart';
 import 'package:myapp/authentication/AuthManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:myapp/home/party/screens/QRCodeReader.dart';
+import 'package:myapp/home/party/partyManager.dart';
 
-
-class JoinParty extends ConsumerWidget {
+class JoinParty extends ConsumerStatefulWidget {
   static const route = '/joinParty';
   JoinParty({Key key}) : super(key: key);
 
-  final nameController = TextEditingController();
-
-  String _QRcodeScanned = 'no party found';
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _JoinPartyState createState() => _JoinPartyState();
+}
+
+class _JoinPartyState extends ConsumerState<JoinParty>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
     return TapTo.unfocus(
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -35,23 +37,23 @@ class JoinParty extends ConsumerWidget {
                       color: Theme.of(context).hintColor, fontSize: 36),
                 ),
                 SizedBox(height: 50),
-                Text(
-                  _QRcodeScanned //this is where the party ID should be
-                ),
-                SizedBox(height: 50),
-                PressedButton(
-                  onPressed: () {
-                   _awaitQRCodeScannerReturn(context);
-                  },
-                  child: Text("QrCode Scanner"),
-                ),
+                // MobileScanner(onDetect: (barcode, args) {
+                //   final String code = barcode.rawValue;
+
+                //   print(code);
+                //   if (code != null)
+                //     ref.read(partyManagerProvider).joinPartyManager(code);
+                //   Navigator.pop(context);
+                // }),
                 SizedBox(height: 24),
                 PressedButton(
-                  onPressed: () {}
-                  // ref
-                  // .read(partyManagerProvider)
-                  // .joinParty(context, nameController.text),
-                  ,
+                  onPressed: () {
+                    ref
+                        .read(partyManagerProvider)
+                        .joinPartyManager("xcgAgeWnvX67sg9P2p1y");
+                    Navigator.pop(context);
+                    return;
+                  },
                   child: Text("CONFIRM"),
                 ),
               ],
@@ -61,14 +63,4 @@ class JoinParty extends ConsumerWidget {
       ),
     );
   }
-  void _awaitQRCodeScannerReturn(BuildContext context) async {
-    final qRCode = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => QRCodeReader()),
-    );
-    _QRcodeScanned = qRCode;
-    print('\n\n############this is the QRcode readed :' + _QRcodeScanned + '################\n\n\ ');
-  }
 }
-
-

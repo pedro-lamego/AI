@@ -10,12 +10,15 @@ class Song {
   final String srcImage;
   final String artistName;
   final String artistUid;
-  final int upvotes;
-  final int downvotes;
 
-  Song(this.uid, this.name, this.duration, this.srcImage, this.artistName,
-      this.artistUid,
-      {this.upvotes = 0, this.downvotes = 0});
+  Song(
+    this.uid,
+    this.name,
+    this.duration,
+    this.srcImage,
+    this.artistName,
+    this.artistUid,
+  );
 
   factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
 

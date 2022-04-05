@@ -41,3 +41,6 @@ final partyStreamProvider = StreamProvider<Playlist>(
 final musicStreamProvider = StreamProvider<List<Song>>(
   (ref) => ref.watch(musicManagerProvider).music,
 );
+final musicProvider = Provider<List<Song>>(
+  (ref) => ref.watch(musicStreamProvider).value,
+);

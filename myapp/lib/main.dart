@@ -39,18 +39,23 @@ class _MyAppState extends ConsumerState<MyApp> {
     final user = ref.watch(userStreamProvider);
     return MaterialApp(
         theme: ThemeData(
-          backgroundColor: Color(0xFFF0A500),
-          primaryColor: Color(0xFFE45826),
-          hintColor: Color(0xFF241C1C),
-          highlightColor: Color(0xFF0FAF63),
-          selectedRowColor: Color(0xFFF5F4F2)
-        ),
+            backgroundColor: Color(0xFFF0A500),
+            primaryColor: Color(0xFFE45826),
+            hintColor: Color(0xFF241C1C),
+            highlightColor: Color(0xFF0FAF63),
+            selectedRowColor: Color(0xFFF5F4F2)),
         routes: RouterConfig.routes,
         home: user.maybeWhen(
             data: (user) {
               print(user);
               if (user == null) return LoginPage();
-              return HomePage();
+              final musics = ref.watch(musicStreamProvider);
+              return musics.maybeWhen(
+                  data: (_) => HomePage(),
+                  loading: () => const SplashScreen(),
+                  orElse: () => Container(
+                        color: Colors.red,
+                      ));
             },
             loading: () => const SplashScreen(),
             orElse: () => Container(

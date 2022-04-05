@@ -1,105 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/home/profile/components/PlaylistTile.dart';
-import 'package:myapp/objects/music/Playlist.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:myapp/authentication/authManager.dart';
+import 'package:myapp/home/profile/components/SliverAppBarPretty.dart';
+import 'package:myapp/home/profile/components/SongsTile.dart';
+import 'package:myapp/objects/Profile.dart';
+import 'package:myapp/objects/music/LikedSong.dart';
+import 'package:myapp/objects/music/PlaylistSong.dart';
+import 'package:myapp/objects/music/Song.dart';
+import 'package:myapp/providers.dart';
 
-class PartySongs extends StatelessWidget {
-  List<Playlist> playlists;
+class PartySongs extends ConsumerWidget {
   static String route = '/partySongs';
-
-  PartySongs(this.playlists, {Key key}) : super(key: key);
+  final List<PlaylistSong> songs;
+  PartySongs(this.songs, {Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    //put stream
-    // List<Playlist> playlists = [
-    //   Playlist(
-    //       "uid",
-    //       [
-    //         Song(
-    //           "uid1",
-    //           "song1",
-    //           "4:20",
-    //           "art1",
-    //           "name",
-    //           "s",
-    //         ),
-    //         Song(
-    //           "uid1",
-    //           "song2",
-    //           "4:20",
-    //           "art2",
-    //           "name",
-    //           "s",
-    //         ),
-    //         Song(
-    //           "uid1",
-    //           "song2",
-    //           "4:20",
-    //           "art2",
-    //           "name",
-    //           "s",
-    //         )
-    //       ],
-    //       "name1",
-    //       "art1",
-    //       DateTime.now()),
-    //   Playlist(
-    //       "uid2",
-    //       [
-    //         Song("uid1", "song1", "4:20", "art1", "name", "s"),
-    //         Song("uid1", "song2", "4:20", "art2", "name", "s"),
-    //         Song("uid1", "song2", "4:20", "art2", "name", "s")
-    //       ],
-    //       "name2",
-    //       "art2",
-    //       DateTime.now()),
-    //   Playlist(
-    //       "uid",
-    //       [
-    //         Song("uid1", "song1", "4:20", "art1", "name", "s"),
-    //         Song("uid1", "song2", "4:20", "art2", "name", "s"),
-    //         Song("uid1", "song2", "4:20", "art2", "name", "s"),
-    //       ],
-    //       "name3",
-    //       "art3",
-    //       DateTime.now())
-    // ];
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            foregroundColor: theme.primaryColor,
-            backgroundColor: theme.backgroundColor,
-            expandedHeight: 120,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text("Parties you\nhave joined",
-                  style: TextStyle(color: theme.hintColor)),
-              centerTitle: true,
+        backgroundColor: theme.backgroundColor,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              foregroundColor: theme.primaryColor,
+              backgroundColor: theme.backgroundColor,
+              expandedHeight: 120,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "Party Songs",
+                  style: TextStyle(color: theme.hintColor),
+                ),
+                centerTitle: true,
+              ),
             ),
-          ),
-          _buildPlaylist(playlists),
-        ],
-      ),
-    );
+            _buildSongs(songs),
+          ],
+        ),
+      );
   }
 
-  Widget _buildPlaylist(List<Playlist> playlists) => SliverToBoxAdapter(
-        child: playlists.length == 0
+  Widget _buildSongs(List<Song> partySongs) => SliverToBoxAdapter(
+        child: partySongs.length == 0
             ? const Center(
                 child: Padding(
-                padding: EdgeInsets.only(top: 200.0),
-                child: Text("There are no playlists"),
-              ))
+                  padding: EdgeInsets.only(top: 220.0),
+                  child: Text(
+                    "There are no songs liked",
+                  ),
+                ),
+              )
             : ListView.builder(
                 primary: false,
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(top: 8),
-                itemCount: playlists.length,
-                itemBuilder: (context, i) =>
-                    PlaylistTile(playlists[i], () => {}),
+                itemCount: partySongs.length,
+                itemBuilder: (context, i) => SongsTile(partySongs[i], isLikedSongs: false),
               ),
         // loading: () =>
         //     LoadingIndicator(indicatorType: Indicator.circleStrokeSpin),

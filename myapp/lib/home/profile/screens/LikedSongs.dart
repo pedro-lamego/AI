@@ -1,42 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:myapp/authentication/authManager.dart';
 import 'package:myapp/home/profile/components/SliverAppBarPretty.dart';
 import 'package:myapp/home/profile/components/SongsTile.dart';
+import 'package:myapp/objects/Profile.dart';
+import 'package:myapp/objects/music/LikedSong.dart';
 import 'package:myapp/objects/music/Song.dart';
+import 'package:myapp/providers.dart';
 
-class LikedSongs extends StatelessWidget {
-  final Map<String, Song> likedSongs;
+class LikedSongs extends ConsumerWidget {
   static String route = '/likedSongs';
 
-  LikedSongs(this.likedSongs, {Key key}) : super(key: key);
+  LikedSongs({Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStreamProvider);
     final theme = Theme.of(context);
-    List<Song> likedSongsList = [];
-    likedSongs.forEach(((_, value) => likedSongsList.add(value)));
-    return Scaffold(
-      backgroundColor: theme.backgroundColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            foregroundColor: theme.primaryColor,
-            backgroundColor: theme.backgroundColor,
-            expandedHeight: 120,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                "Liked Songs",
-                style: TextStyle(color: theme.hintColor),
+    List<LikedSong> likedSongsList = [];
+    return user.maybeWhen(data: (user) {
+      user.likedSongs.forEach(((_, value) => likedSongsList.add(value)));
+      likedSongsList.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      return Scaffold(
+        backgroundColor: theme.backgroundColor,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              foregroundColor: theme.primaryColor,
+              backgroundColor: theme.backgroundColor,
+              expandedHeight: 120,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  "Liked Songs",
+                  style: TextStyle(color: theme.hintColor),
+                ),
+                centerTitle: true,
               ),
-              centerTitle: true,
             ),
-          ),
-          _buildPlaylist(likedSongsList),
-        ],
-      ),
-    );
+            _buildSongs(likedSongsList),
+          ],
+        ),
+      );
+    });
   }
 
-  Widget _buildPlaylist(List<Song> likedSongs) => SliverToBoxAdapter(
+  Widget _buildSongs(List<Song> likedSongs) => SliverToBoxAdapter(
         child: likedSongs.length == 0
             ? const Center(
                 child: Padding(

@@ -7,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/aspects/failures/authFailure.dart';
 import 'package:myapp/aspects/failures/failure.dart';
+import 'package:myapp/home/musicManager.dart';
+import 'package:myapp/home/party/partyManager.dart';
+import 'package:myapp/objects/music/LikedSong.dart';
 import 'package:myapp/objects/music/Playlist.dart';
+import 'package:myapp/objects/music/PlaylistSong.dart';
 import 'package:myapp/objects/music/Song.dart';
 import 'package:myapp/providers.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,7 +26,8 @@ class AuthManager {
   final Reader _read;
   FirebaseAuth get firebaseAuth => _read(authProvider);
   FirebaseFirestore get firestore => _read(firestoreProvider);
-
+  MusicManager get musicManager => _read(musicManagerProvider);
+  PartyManager get partyManager => _read(partyManagerProvider);
   Profile userBloc;
 
   final _userStream = BehaviorSubject<Profile>();
@@ -71,6 +76,10 @@ class AuthManager {
     userBloc.uid = userData.id;
     await saveUser();
     await setUpUserStream();
+    await musicManager.setUpMusicStream();
+    if (userBloc.playlistToken != "") {
+      await partyManager.setUpPartyStream(userBloc.playlistToken);
+    }
   }
 
   _emptyManagers() {
@@ -103,7 +112,7 @@ class AuthManager {
     });
   }
 
-  addLikedSong(Song song) {
+  addLikedSong(LikedSong song) {
     Map<String, Map<String, dynamic>> result = {};
     userBloc.likedSongs.addAll({song.uid: song});
     userBloc.likedSongs.forEach((uid, s) {
@@ -115,12 +124,10 @@ class AuthManager {
           "artistName": s.artistName,
           "artistUid": s.artistUid,
           "srcImage": s.srcImage,
-          "timestamp": DateTime.now(),
+          "timestamp": s.timestamp,
         }
       });
     });
-
-    print(result.keys);
 
     firestore
         .collection("users")
@@ -128,7 +135,8 @@ class AuthManager {
         .update({"likedSongs": result});
   }
 
-  removeLikedSong(String uid) {
+  void removeLikedSong(String uid) {
+    print("uid");
     Map<String, Map<String, dynamic>> result = {};
     userBloc.likedSongs.remove(uid);
     userBloc.likedSongs.forEach((uid, s) {
@@ -140,28 +148,50 @@ class AuthManager {
           "artistName": s.artistName,
           "artistUid": s.artistUid,
           "srcImage": s.srcImage,
-          "timestamp": DateTime.now(),
+          "timestamp": s.timestamp,
         }
       });
+      firestore
+          .collection("users")
+          .doc(userBloc.uid)
+          .update({"likedSongs": result});
     });
-
-
-    firestore
-        .collection("users")
-        .doc(userBloc.uid)
-        .update({"likedSongs": result});
   }
 
   addPlaylist(Playlist playlist) {
-    userBloc.playlists.add(playlist);
+    Map<String, dynamic> result = {};
+    Map<String, dynamic> songs = {};
 
-    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+    playlist.songs.forEach((key, value) {
+      songs.addAll({key : value.toJson()});
+    });
+
+    result.addAll({
+      "uid": playlist.uid,
+      "name": playlist.name,
+      "owner": playlist.owner,
+      "songs": songs,
+      "timestamp": playlist.timestamp,
+    });
+
+    print(result);
+    firestore.collection("users").doc(userBloc.uid).update({
+      "playlists": FieldValue.arrayUnion([result])
+    });
   }
 
-  removePlaylist(int index) {
-    userBloc.playlists.removeAt(index);
+  void joinParty(String playlistUid) {
+    firestore
+        .collection("users")
+        .doc(userBloc.uid)
+        .update({"playlistToken": playlistUid});
+  }
 
-    firestore.collection("users").doc(userBloc.uid).set(userBloc.toJson());
+  void kickParty() {
+    firestore
+        .collection("users")
+        .doc(userBloc.uid)
+        .update({"playlistToken": ""});
   }
 
   ///public
@@ -250,6 +280,98 @@ class AuthManager {
 
   List<Map<String, dynamic>> json = [
     {
+      "i": "https://i.scdn.co/image/ab67616d0000b273b5b7d7fb1c0de0c070115b76",
+      "t": [
+        {"n": "Warm (feat. Mia)", "d": "04:15", "uid": "3kBofOTKMUZ62a311eUwvx"}
+      ],
+      "aN": "Dre'es",
+      "aU": "4pc5r183mYvIzGyFv2S0hO"
+    },
+    {
+      "i": "https://i.scdn.co/image/ab67616d0000b2731918c7e10115b80211065022",
+      "t": [
+        {
+          "n": "Honey, There's No Time",
+          "d": "04:21",
+          "uid": "6utl2puTMct2t0ntNnZc68"
+        },
+        {"n": "By the Poolside", "d": "04:37", "uid": "0DHRNZ26HFLPnmwDUjGB89"},
+        {
+          "n": "Sink into the Floor",
+          "d": "05:41",
+          "uid": "4UCiDcv0yO9tNLZbkZeBBA"
+        },
+        {"n": "Noche Oscura", "d": "05:46", "uid": "0ZvWdGaWqnPs99z1Xso8YG"}
+      ],
+      "aN": "Feng Suave",
+      "aU": "73dudJ9j0HStIhJDU8MjMI"
+    },
+    {
+      "i": "https://i.scdn.co/image/ab67616d0000b273347b1bf1afb939a64364a432",
+      "t": [
+        {"n": "Half-Moon Bag", "d": "05:34", "uid": "0WLw2xoTkQNlbMQxTG7Tyv"},
+        {"n": "Toking, Dozing", "d": "04:47", "uid": "76z40sMw3mZJKUL1ODWjSn"},
+        {
+          "n": "Maybe Another Time",
+          "d": "03:05",
+          "uid": "6w1Qm9RBUW7mvcuj4YQimE"
+        },
+        {
+          "n": "I'm Warping Here",
+          "d": "04:35",
+          "uid": "0MPj73CxkssDfy8RUdFN6m"
+        },
+        {"n": "People Wither", "d": "05:12", "uid": "5giQdpVtrrX8L8mcBNHGIa"},
+        {"n": "Day One", "d": "05:21", "uid": "1x5CnN4GQA3WVX63spoXoE"}
+      ],
+      "aN": "Feng Suave",
+      "aU": "73dudJ9j0HStIhJDU8MjMI"
+    },
+    {
+      "i": "https://i.scdn.co/image/ab67616d0000b27360de86e634f2bd4d1364797e",
+      "t": [
+        {"n": "Come Together", "d": "04:41", "uid": "1l32mo5oW5oIRRjNnVJBNR"},
+        {
+          "n": "Roll (Burbank Funk)",
+          "d": "03:11",
+          "uid": "01bfHCsUTwydXCHP1VoLlI"
+        },
+        {"n": "Come Over", "d": "05:22", "uid": "2hPNuVVSV1tqiD2uPlfehz"},
+        {"n": "La Di Da", "d": "03:27", "uid": "5IIq5uEYpUZoSjTEjqn7q1"},
+        {"n": "Stay the Night", "d": "04:22", "uid": "0JADBJ42q1ab92VOULBh9V"},
+        {"n": "Bravo", "d": "03:26", "uid": "03s6mrEsdLO38EwPOZ6keH"},
+        {"n": "Mood", "d": "03:18", "uid": "5biM2vzWFcYOVFcsrYK2wA"},
+        {
+          "n": "Next Time / Humble Pie",
+          "d": "06:41",
+          "uid": "18q3Snk21t9JruunyQ9xNT"
+        },
+        {
+          "n": "It Gets Better (With Time)",
+          "d": "05:27",
+          "uid": "7bKxc7UstlRxOtNBvLjGSs"
+        },
+        {
+          "n": "Look What U Started",
+          "d": "05:31",
+          "uid": "0sSNa2XDu7dxbnjK0lKnDH"
+        },
+        {"n": "Wanna Be", "d": "04:27", "uid": "5GjisoOfsN8qagrax01T4y"},
+        {"n": "Beat Goes On", "d": "04:16", "uid": "1q1Uk6aQvyjavCsnTb5lFH"},
+        {"n": "Hold On", "d": "07:46", "uid": "5tqZJUHEuqdN12RZVq2l9p"}
+      ],
+      "aN": "The Internet",
+      "aU": "7GN9PivdemQRKjDt4z5Zv8"
+    },
+    {
+      "i": "https://i.scdn.co/image/ab67616d0000b273cdeeb038a7ed8a85ebd45650",
+      "t": [
+        {"n": "Us", "d": "03:04", "uid": "5mnh4K9uqRYNpuqd3s1NG0"}
+      ],
+      "aN": "Miller Blue",
+      "aU": "2soHr8jGZ0ATxc6X6BgmbA"
+    },
+    {
       "i": "https://i.scdn.co/image/ab67616d0000b2732aebf42d8901fbcd14c9eca8",
       "t": [
         {"n": "Before Paris", "d": "02:30", "uid": "4D5POIvEJfBH8wO80Ic4T8"},
@@ -290,27 +412,17 @@ class AuthManager {
       "aU": "1uiEZYehlNivdK3iQyAbye"
     },
     {
-      "i": "https://i.scdn.co/image/ab67616d0000b2731918c7e10115b80211065022",
+      "i": "https://i.scdn.co/image/ab67616d0000b273d755837ea8b6bf0406f44bf7",
       "t": [
-        {
-          "n": "Honey, There's No Time",
-          "d": "04:21",
-          "uid": "6utl2puTMct2t0ntNnZc68"
-        },
-        {"n": "By the Poolside", "d": "04:37", "uid": "0DHRNZ26HFLPnmwDUjGB89"},
-        {
-          "n": "Sink into the Floor",
-          "d": "05:41",
-          "uid": "4UCiDcv0yO9tNLZbkZeBBA"
-        },
-        {"n": "Noche Oscura", "d": "05:46", "uid": "0ZvWdGaWqnPs99z1Xso8YG"}
+        {"n": "Lead", "d": "05:38", "uid": "2UdxBRnSU71nkwtvXxeufm"}
       ],
-      "aN": "Feng Suave",
-      "aU": "73dudJ9j0HStIhJDU8MjMI"
-    },
+      "aN": "Safari Zone",
+      "aU": "7x2yUTriWOIAWFmmHMdl0w"
+    }
   ];
 
   populateDb() async {
+    List<PlaylistSong> list = [];
     for (dynamic album in json) {
       for (dynamic music in album["t"]) {
         Map<String, dynamic> result = {};
@@ -321,10 +433,12 @@ class AuthManager {
           "artistName": album["aN"],
           "artistUid": album["aU"]
         });
-        // firestore.collection("musics").doc(music["uid"]).set(result);
-        addLikedSong(Song(music["uid"], music["n"], music["d"], album["i"],
-            album["aN"], album["aU"]));
+        firestore.collection("musics").doc(music["uid"]).set(result);
+        // list.add(PlaylistSong(music["uid"], music["n"], music["d"], album["i"],
+        //     album["aN"], album["aU"]));
       }
     }
+    // addPlaylist(Playlist("uid1", list, "festa da maria", "maria",
+    //     DateTime.now().toIso8601String(), true));
   }
 }

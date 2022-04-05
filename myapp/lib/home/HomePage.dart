@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/home/party/PartyPage.dart';
 import 'package:myapp/home/profile/ProfilePage.dart';
-import 'package:myapp/home/profile/screens/LikedSongs.dart';
-import 'package:myapp/home/profile/screens/PartySongs.dart';
 
 class HomePage extends StatefulWidget {
   static const route = '/home';

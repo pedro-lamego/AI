@@ -9,15 +9,14 @@ part of 'Playlist.dart';
 Playlist _$PlaylistFromJson(Map<String, dynamic> json) {
   return Playlist(
     json['uid'] as String,
-    (json['songs'] as List)
-        ?.map(
-            (e) => e == null ? null : Song.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['songs'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k,
+          e == null ? null : PlaylistSong.fromJson(e as Map<String, dynamic>)),
+    ),
     json['name'] as String,
     json['owner'] as String,
-    json['dateTime'] == null
-        ? null
-        : DateTime.parse(json['dateTime'] as String),
+    json['timestamp'] as String,
+    json['isOpen'] as bool,
   );
 }
 
@@ -26,5 +25,6 @@ Map<String, dynamic> _$PlaylistToJson(Playlist instance) => <String, dynamic>{
       'songs': instance.songs,
       'name': instance.name,
       'owner': instance.owner,
-      'dateTime': instance.dateTime?.toIso8601String(),
+      'timestamp': instance.timestamp,
+      'isOpen': instance.isOpen,
     };
