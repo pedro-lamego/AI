@@ -7,6 +7,7 @@ import 'package:myapp/aspects/widgets/SplashScreen.dart';
 import 'package:myapp/authentication/LoginPage.dart';
 import 'package:myapp/home/HomePage.dart';
 import 'package:myapp/providers.dart';
+import 'package:spotify_sdk/spotify_sdk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
