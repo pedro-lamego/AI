@@ -1,4 +1,4 @@
-// import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:myapp/aspects/widgets/AppBarPretty.dart';
 import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/aspects/widgets/TapTo.dart';
@@ -18,8 +18,29 @@ class JoinParty extends ConsumerStatefulWidget {
 
 class _JoinPartyState extends ConsumerState<JoinParty>
     with SingleTickerProviderStateMixin {
+  QRViewController controller;
+  Barcode result;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void reassemble() async {
+    super.reassemble();
+    await controller.pauseCamera();
+    controller.resumeCamera();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (result != null) print("Result is " + result.code);
     return TapTo.unfocus(
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -37,30 +58,51 @@ class _JoinPartyState extends ConsumerState<JoinParty>
                       color: Theme.of(context).hintColor, fontSize: 36),
                 ),
                 SizedBox(height: 50),
-                // MobileScanner(onDetect: (barcode, args) {
-                //   final String code = barcode.rawValue;
-
-                //   print(code);
-                //   if (code != null)
-                //     ref.read(partyManagerProvider).joinPartyManager(code);
-                //   Navigator.pop(context);
-                // }),
-                SizedBox(height: 24),
-                PressedButton(
-                  onPressed: () {
-                    ref
-                        .read(partyManagerProvider)
-                        .joinPartyManager("xcgAgeWnvX67sg9P2p1y");
-                    Navigator.pop(context);
-                    return;
-                  },
-                  child: Text("CONFIRM"),
+                Container(
+                  width: 300,
+                  height: 300,
+                  child: buildQrView(context),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                result != null
+                    ? PressedButton(
+                        onPressed: () {
+                          ref
+                              .read(partyManagerProvider)
+                              .joinPartyManager(result.code);
+                          Navigator.pop(
+                            context,
+                          );
+                        },
+                        child: Text("JOIN NOW"))
+                    : Container()
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget buildQrView(BuildContext context) => QRView(
+        onQRViewCreated: onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+            borderColor: Theme.of(context).primaryColor, borderRadius: 10),
+      );
+
+  void onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+
+      controller.scannedDataStream.listen((scanData) {
+        if (scanData != null && result != scanData) {
+          setState(() {
+            result = scanData;
+          });
+        }
+      });
+    });
   }
 }
