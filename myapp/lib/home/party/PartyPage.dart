@@ -31,9 +31,10 @@ class PartyPage extends ConsumerWidget {
               data: (party) {
                 List<PlaylistSong> songs = [];
                 party.songs.forEach((_, value) => songs.add(value));
-                songs.sort((a, b) => a.timestamp
-                    .compareTo(b.timestamp));
+                songs.sort((a, b) => a.timestamp.compareTo(b.timestamp));
                 songs.sort((a, b) => b.heuristic().compareTo(a.heuristic()));
+                print("ola" + user.uid);
+                print("adeus" + party.owner);
                 return SingleChildScrollView(
                   child: Column(children: [
                     SizedBox(

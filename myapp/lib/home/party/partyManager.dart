@@ -45,8 +45,8 @@ class PartyManager {
         party.data()["uid"],
         {},
         party.data()["name"],
-        party.data()["timestamp"],
         party.data()["owner"],
+        party.data()["timestamp"],
         party.data()["isOpen"]); //handle restaurant
 
     partyStreamSubscription = firestore

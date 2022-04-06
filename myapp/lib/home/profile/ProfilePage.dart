@@ -8,6 +8,8 @@ import 'package:myapp/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends ConsumerWidget {
   @override
@@ -41,20 +43,23 @@ class ProfilePage extends ConsumerWidget {
                       fontSize: 26,
                       fontWeight: FontWeight.w500)),
             ),
-            // PressedButton(
-            //     onPressed: () => ref.read(authManagerProvider).populateDb(),
-            //     child: Text("POPULATE")),
+            PressedButton(
+                onPressed: () async => await FirebaseFunctions.instance
+                    .httpsCallable("sugestedSongs")
+                    .call(),
+                child: Text("POPULATE")),
             BigPressedButton(
               onPressed: () => Navigator.pushNamed(
                 context,
                 LikedSongs.route,
-                arguments: user.likedSongs,//TODO see this when i am less high
+                arguments: user.likedSongs, //TODO see this when i am less high
               ),
               child: const Text("Liked Songs"),
               imgSrc: "disco.jpg",
             ),
             BigPressedButton(
-              onPressed: () => Navigator.pushNamed(context, PartyPlaylists.route,
+              onPressed: () => Navigator.pushNamed(
+                  context, PartyPlaylists.route,
                   arguments: user.playlists),
               child: const Text("Parties you\nhave joined"),
               color: const Color(0xFF7876FF),
