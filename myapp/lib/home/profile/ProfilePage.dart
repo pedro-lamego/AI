@@ -44,9 +44,7 @@ class ProfilePage extends ConsumerWidget {
                       fontWeight: FontWeight.w500)),
             ),
             PressedButton(
-                onPressed: () async => await FirebaseFunctions.instance
-                    .httpsCallable("sugestedSongs")
-                    .call(),
+                onPressed: () async => ref.read(authManagerProvider).populateDb(),
                 child: Text("POPULATE")),
             BigPressedButton(
               onPressed: () => Navigator.pushNamed(
