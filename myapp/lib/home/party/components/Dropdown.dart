@@ -30,7 +30,7 @@ class _DropdownState extends ConsumerState<Dropdown> {
           size: 32,
           color: theme.primaryColor,
         ),
-        customItemsIndexes: widget.isAdmin ? [4] : [3],
+        customItemsIndexes: widget.isAdmin ? [5] : [3],
         customItemsHeight: 8,
         items: [
           ...list.map(
@@ -70,7 +70,13 @@ class MenuItem {
 
 class MenuItems {
   static const List<MenuItem> generalItems = [search, sugested, leave];
-  static const List<MenuItem> adminItems = [search, sugested, qrcode, finish];
+  static const List<MenuItem> adminItems = [
+    start,
+    search,
+    sugested,
+    qrcode,
+    finish
+  ];
 
   static const leave = MenuItem(
     text: 'Leave Party',
@@ -89,6 +95,10 @@ class MenuItems {
     text: 'Search Song',
   );
 
+  static const start = MenuItem(
+    text: 'Start Party',
+  );
+
   static Widget buildItem(MenuItem item) {
     return Text(
       item.text,
@@ -98,7 +108,7 @@ class MenuItems {
     );
   }
 
-  static onChanged(BuildContext context, MenuItem item, WidgetRef ref) async{
+  static onChanged(BuildContext context, MenuItem item, WidgetRef ref) async {
     PartyManager partyManager = ref.read(partyManagerProvider);
     switch (item) {
       case MenuItems.leave:
@@ -107,10 +117,12 @@ class MenuItems {
       case MenuItems.finish:
         partyManager.stopParty();
         break;
+      case MenuItems.start:
+        partyManager.startQueue();
+        break;
       case MenuItems.sugested:
         List<Song> songs = await partyManager.sugestedSongs();
-        Navigator.pushNamed(context, SugestedSongs.route,
-            arguments: songs);
+        Navigator.pushNamed(context, SugestedSongs.route, arguments: songs);
         break;
       case MenuItems.qrcode:
         Navigator.pushNamed(context, ShowQRCode.route,

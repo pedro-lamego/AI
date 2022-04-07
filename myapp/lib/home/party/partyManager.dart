@@ -48,7 +48,6 @@ class PartyManager {
         party.data()["owner"],
         party.data()["timestamp"],
         party.data()["isOpen"]); //handle restaurant
-
     partyStreamSubscription = firestore
         .collection("playlists")
         .doc(uid)
@@ -80,6 +79,8 @@ class PartyManager {
     PlaylistSong song = PlaylistSong.fromJson(doc.data());
     partyBloc.songs[doc.id].downvotes = song.downvotes;
     partyBloc.songs[doc.id].upvotes = song.upvotes;
+    partyBloc.songs[doc.id].alreadyPlayed = song.alreadyPlayed;
+    partyBloc.songs[doc.id].playing = song.playing;
   }
   // General Functions
 
@@ -94,7 +95,6 @@ class PartyManager {
         "isOpen": true,
         "uid": result.id,
       });
-      //TODO tratar da collection songs if necessary
 
       joinPartyManager(result.id);
     } catch (err) {
@@ -118,9 +118,13 @@ class PartyManager {
         "artistName": song.artistName,
         "artistUid": song.artistUid,
         "duration": song.duration,
+        "position": song.position,
+        "album": song.album,
         "name": song.name,
         "srcImage": song.srcImage,
-        "timestamp": DateTime.now().toIso8601String()
+        "timestamp": DateTime.now().toIso8601String(),
+        "alreadyPlayed": false,
+        "playing": false,
       });
     }
   }
@@ -151,6 +155,7 @@ class PartyManager {
   // Admin Functions
 
   stopParty() async {
+    // startQueue();
     await firestore
         .collection("playlists")
         .doc(partyBloc.uid)
@@ -159,16 +164,29 @@ class PartyManager {
 
   changeQueue() {}
 
-  playSong(String songUid) async {
-    HttpsCallableResult result =
-        await FirebaseFunctions.instance.httpsCallable("playSong").call({
-      "songUid": songUid,
-    });
+  playSong(String album, int position, String songUid) async {
+    firestore
+        .collection("playlists")
+        .doc(partyBloc.uid)
+        .collection("songs")
+        .doc(songUid)
+        .update({"playing": true});
+    // HttpsCallableResult result =
+    //     await FirebaseFunctions.instance.httpsCallable("playSong").call({
+    //   "album": album,
+    //   "position": position,
+    // });
   }
 
-  stopSong() async {
-    HttpsCallableResult result =
-        await FirebaseFunctions.instance.httpsCallable("stopSong").call();
+  stopSong(String songUid) async {
+    await firestore
+        .collection("playlists")
+        .doc(partyBloc.uid)
+        .collection("songs")
+        .doc(songUid)
+        .update({"playing": false, "alreadyPlayed": true});
+    // HttpsCallableResult result =
+    //     await FirebaseFunctions.instance.httpsCallable("stopSong").call();
   }
 
   Future<List<Song>> sugestedSongs() async {
@@ -200,8 +218,25 @@ class PartyManager {
         .call({"artistList": artistList});
     for (dynamic song in result.data) {
       songList.add(Song(song.uid, song.name, song.duration, song.srcImage,
-          song.artistName, song.artistUid));
+          song.artistName, song.artistUid, song.position, song.album));
     }
     return songList;
+  }
+
+  void startQueue() async {
+    while (true) {
+      List<PlaylistSong> songs = [];
+      partyBloc.songs.forEach((_, value) => songs.add(value));
+      songs.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      songs.sort((a, b) => b.heuristic().compareTo(a.heuristic()));
+      songs.removeWhere((song) => song.alreadyPlayed == true);
+      if (songs.length == 0) continue;
+      PlaylistSong song = songs[0];
+      playSong(song.album, song.position, song.uid);
+      List<String> duration = song.duration.split(":");
+      await Future.delayed(Duration(
+          minutes: int.parse(duration[0]), seconds: int.parse(duration[1])));
+      await stopSong(song.uid);
+    }
   }
 }

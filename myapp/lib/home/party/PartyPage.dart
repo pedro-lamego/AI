@@ -2,6 +2,7 @@ import 'package:myapp/aspects/widgets/PressedButton.dart';
 import 'package:myapp/authentication/authManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:myapp/home/party/components/BottomMusicPlayerBar.dart';
 import 'package:myapp/home/party/components/Dropdown.dart';
 import 'package:myapp/home/party/components/SearchBar.dart';
 import 'package:myapp/home/party/partyManager.dart';
@@ -33,49 +34,55 @@ class PartyPage extends ConsumerWidget {
                 party.songs.forEach((_, value) => songs.add(value));
                 songs.sort((a, b) => a.timestamp.compareTo(b.timestamp));
                 songs.sort((a, b) => b.heuristic().compareTo(a.heuristic()));
-                print("ola" + user.uid);
-                print("adeus" + party.owner);
-                return SingleChildScrollView(
-                  child: Column(children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 6.0),
-                      child: Row(
-                        children: [
-                          Text(party.name,
-                              style: TextStyle(
-                                  color: theme.hintColor,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w600)),
-                          Spacer(),
-                          Dropdown(user.uid == party.owner)
-                        ],
+                songs.removeWhere((song)=> song.alreadyPlayed == true);
+                var index = songs.indexWhere((song) =>song.playing);
+                
+                return Stack(
+                  children:[ SingleChildScrollView(
+                    child: Column(children: [
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    party.songs.length == 0
-                        ? const Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 220.0),
-                              child: Text(
-                                "There are no songs in queue",
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 6.0),
+                        child: Row(
+                          children: [
+                            Text(party.name,
+                                style: TextStyle(
+                                    color: theme.hintColor,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w600)),
+                            Spacer(),
+                            Dropdown(user.uid == party.owner)
+                          ],
+                        ),
+                      ),
+                      songs.length == 0
+                          ? const Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 220.0),
+                                child: Text(
+                                  "There are no songs in queue",
+                                ),
                               ),
+                            )
+                          : ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(top: 8),
+                              itemCount: songs.length,
+                              itemBuilder: (context, i) => SongsTile(songs[i],
+                                  voteSong: true,
+                                  upvotes: songs[i].upvotes.length,
+                                  downvotes: songs[i].downvotes.length,
+                                  isAdmin: user.uid == party.owner,
+                                  inParty: true,),
                             ),
-                          )
-                        : ListView.builder(
-                            primary: false,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.only(top: 8),
-                            itemCount: songs.length,
-                            itemBuilder: (context, i) => SongsTile(songs[i],
-                                voteSong: true,
-                                upvotes: songs[i].upvotes.length,
-                                downvotes: songs[i].downvotes.length),
-                          ),
-                  ]),
-                );
+                    ]),
+                  ),
+                  index != -1 ? BottomMusicPlayerBar(songs[index], party.owner == authManager.userBloc.uid) : Container() 
+                  ]);
               }),
       loading: () => CircularProgressIndicator(),
       orElse: () => Container(

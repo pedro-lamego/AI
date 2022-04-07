@@ -12,7 +12,7 @@ final musicManagerProvider = Provider<MusicManager>(
 
 class MusicManager {
   final Reader _read;
-  //TODO see if this is necessary
+  
   get userStream => _read(userStreamProvider);
   FirebaseFirestore get firestore => _read(firestoreProvider);
 

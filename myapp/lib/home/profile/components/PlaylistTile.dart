@@ -42,7 +42,7 @@ class PlaylistTile extends ConsumerWidget {
             ),
             height: 130,
             width: MediaQuery.of(context).size.width * 0.8,
-          ), //TODO: go catch images
+          ), 
         ),
       ),
     );

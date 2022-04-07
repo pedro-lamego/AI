@@ -43,14 +43,14 @@ class ProfilePage extends ConsumerWidget {
                       fontSize: 26,
                       fontWeight: FontWeight.w500)),
             ),
-            PressedButton(
-                onPressed: () async => ref.read(authManagerProvider).populateDb(),
-                child: Text("POPULATE")),
+            // PressedButton(
+            //     onPressed: () async => ref.read(authManagerProvider).populateDb(),
+            //     child: Text("POPULATE")),
             BigPressedButton(
               onPressed: () => Navigator.pushNamed(
                 context,
                 LikedSongs.route,
-                arguments: user.likedSongs, //TODO see this when i am less high
+                arguments: user.likedSongs, 
               ),
               child: const Text("Liked Songs"),
               imgSrc: "disco.jpg",

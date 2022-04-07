@@ -86,7 +86,6 @@
 // class CreditCardNumberValidator {
 //   static String error;
 //   static String validate(BuildContext context, String value) {
-//     // TODO LUHNs algorithm
 //     if (value.length >= 20 && value.length <= 24) return error;
 //     return Locales.string(context, "validate14");
 //   }

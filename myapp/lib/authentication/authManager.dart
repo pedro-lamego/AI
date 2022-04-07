@@ -64,7 +64,7 @@ class AuthManager {
     }
 
     if (userData.data() == null) {
-      //TODO couldnt login
+      
       return;
     }
 
@@ -128,6 +128,8 @@ class AuthManager {
           "artistUid": s.artistUid,
           "srcImage": s.srcImage,
           "timestamp": s.timestamp,
+          "position": s.position,
+          "album": s.album,
         }
       });
     });
@@ -152,6 +154,8 @@ class AuthManager {
           "artistUid": s.artistUid,
           "srcImage": s.srcImage,
           "timestamp": s.timestamp,
+          "position": s.position,
+          "album": s.album,
         }
       });
       firestore
@@ -288,31 +292,37 @@ class AuthManager {
         {
           "n": "Intro",
           "d": "02:48",
-          "uid": "spotify:track:70wHECbwn2g3yPa2oirqn0"
+          "uid": "spotify:track:70wHECbwn2g3yPa2oirqn0",
+          "pos": 1
         },
         {
           "n": "At the Bar",
           "d": "03:30",
-          "uid": "spotify:track:2C67OHbZjiG90ojqFn63HW"
+          "uid": "spotify:track:2C67OHbZjiG90ojqFn63HW",
+          "pos": 2
         },
         {
           "n": "Diggin'",
           "d": "04:21",
-          "uid": "spotify:track:1IJSvKkI2bhttdFjcnPHne"
+          "uid": "spotify:track:1IJSvKkI2bhttdFjcnPHne",
+          "pos": 3
         },
         {
           "n": "Calcata",
           "d": "04:32",
-          "uid": "spotify:track:5b2xh0sIWQRsL22Pl25mxT"
+          "uid": "spotify:track:5b2xh0sIWQRsL22Pl25mxT",
+          "pos": 4
         },
         {
           "n": "Godot",
           "d": "08:58",
-          "uid": "spotify:track:52EU1aAI9DVkmbLa00nZUl"
+          "uid": "spotify:track:52EU1aAI9DVkmbLa00nZUl",
+          "pos": 5
         }
       ],
       "aN": "Quiver",
-      "aU": "5Sce1bRzY2D0fD13dJX7yO"
+      "aU": "5Sce1bRzY2D0fD13dJX7yO",
+      "uri": "spotify:album:72IwMNE0EYNv82Pq20MEsS"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b2737781786637940540efa4492b",
@@ -320,11 +330,13 @@ class AuthManager {
         {
           "n": "Chronic Sunshine",
           "d": "05:31",
-          "uid": "spotify:track:2RGe02P8xxSF9syj0ltPjX"
+          "uid": "spotify:track:2RGe02P8xxSF9syj0ltPjX",
+          "pos": 1
         }
       ],
       "aN": "Cosmo Pyke",
-      "aU": "1RKG6WXRzmTJtbLRZTPU0T"
+      "aU": "1RKG6WXRzmTJtbLRZTPU0T",
+      "uri": "spotify:album:2GVSTqYcLPfhtpkE7mTR99"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b273617c314e94693fad9a26f798",
@@ -332,16 +344,19 @@ class AuthManager {
         {
           "n": "Get You (feat. Kali Uchis)",
           "d": "05:37",
-          "uid": "spotify:track:6N3qHjcwly8ZuhE4bPYJAX"
+          "uid": "spotify:track:6N3qHjcwly8ZuhE4bPYJAX",
+          "pos": 1
         },
         {
           "n": "Japanese Denim",
           "d": "05:31",
-          "uid": "spotify:track:1boXOL0ua7N2iCOUVI1p9F"
+          "uid": "spotify:track:1boXOL0ua7N2iCOUVI1p9F",
+          "pos": 2
         }
       ],
       "aN": "Daniel Caesar",
-      "aU": "20wkVLutqVOYrc0kxFs7rA"
+      "aU": "20wkVLutqVOYrc0kxFs7rA",
+      "uri": "spotify:album:5qfhZ5YkZ4LhEUbYgjrWt6"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b273965f1a626c0d8667af96d7d3",
@@ -349,66 +364,79 @@ class AuthManager {
         {
           "n": "Sound & Color",
           "d": "03:02",
-          "uid": "spotify:track:4jVQBszyxsa0GeRSe5ToVC"
+          "uid": "spotify:track:4jVQBszyxsa0GeRSe5ToVC",
+          "pos": 1
         },
         {
           "n": "Don't Wanna Fight",
           "d": "04:53",
-          "uid": "spotify:track:51LcPhaclbiR8EAyC76M2L"
+          "uid": "spotify:track:51LcPhaclbiR8EAyC76M2L",
+          "pos": 2
         },
         {
           "n": "Dunes",
           "d": "04:18",
-          "uid": "spotify:track:1FIopLuSI1am9L8Qfn6YRR"
+          "uid": "spotify:track:1FIopLuSI1am9L8Qfn6YRR",
+          "pos": 3
         },
         {
           "n": "Future People",
           "d": "03:22",
-          "uid": "spotify:track:6CFJ419mkYr35Vs5D75LzV"
+          "uid": "spotify:track:6CFJ419mkYr35Vs5D75LzV",
+          "pos": 4
         },
         {
           "n": "Gimme All Your Love",
           "d": "04:03",
-          "uid": "spotify:track:3DH42U4bDllHWK6tQc4OQF"
+          "uid": "spotify:track:3DH42U4bDllHWK6tQc4OQF",
+          "pos": 5
         },
         {
           "n": "This Feeling",
           "d": "04:29",
-          "uid": "spotify:track:2zhfCGN6y15c4ArUHXi9g7"
+          "uid": "spotify:track:2zhfCGN6y15c4ArUHXi9g7",
+          "pos": 6
         },
         {
           "n": "Guess Who",
           "d": "03:16",
-          "uid": "spotify:track:44eHr3F6XhEee5znQ05yrM"
+          "uid": "spotify:track:44eHr3F6XhEee5znQ05yrM",
+          "pos": 7
         },
         {
           "n": "The Greatest",
           "d": "04:50",
-          "uid": "spotify:track:0EyKezohJwSdqyMzXWsqND"
+          "uid": "spotify:track:0EyKezohJwSdqyMzXWsqND",
+          "pos": 8
         },
         {
           "n": "Shoegaze",
           "d": "03:59",
-          "uid": "spotify:track:3gUXn562icG8RVd8JMwH22"
+          "uid": "spotify:track:3gUXn562icG8RVd8JMwH22",
+          "pos": 9
         },
         {
           "n": "Miss You",
           "d": "04:47",
-          "uid": "spotify:track:72sYnczWVDAWqYoJSvgsCx"
+          "uid": "spotify:track:72sYnczWVDAWqYoJSvgsCx",
+          "pos": 10
         },
         {
           "n": "Gemini",
           "d": "07:36",
-          "uid": "spotify:track:3oM0gt7y574aPlLERyaNja"
+          "uid": "spotify:track:3oM0gt7y574aPlLERyaNja",
+          "pos": 11
         },
         {
           "n": "Over My Head",
           "d": "04:51",
-          "uid": "spotify:track:02iH3pu6r76OzE8OXIu69r"
+          "uid": "spotify:track:02iH3pu6r76OzE8OXIu69r",
+          "pos": 12
         }
       ],
       "aN": "Alabama Shakes",
-      "aU": "16GcWuvvybAoaHr0NqT8Eh"
+      "aU": "16GcWuvvybAoaHr0NqT8Eh",
+      "uri": "spotify:album:03nQNGFi3dIxg6ghNbtVWW"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b27338b1c0864dac8e7f05401302",
@@ -416,61 +444,73 @@ class AuthManager {
         {
           "n": "It's Been a Long Time",
           "d": "03:59",
-          "uid": "spotify:track:3hfeTkSTd3ruEyoBQkBdUb"
+          "uid": "spotify:track:3hfeTkSTd3ruEyoBQkBdUb",
+          "pos": 1
         },
         {
           "n": "Do It Again",
           "d": "04:59",
-          "uid": "spotify:track:7cjbglDR6yec0j1gl92ApG"
+          "uid": "spotify:track:7cjbglDR6yec0j1gl92ApG",
+          "pos": 2
         },
         {
           "n": "Smiling",
           "d": "03:20",
-          "uid": "spotify:track:3WM1tXhp9IXRFP6pXC2AEc"
+          "uid": "spotify:track:3WM1tXhp9IXRFP6pXC2AEc",
+          "pos": 3
         },
         {
           "n": "Guilty",
           "d": "04:35",
-          "uid": "spotify:track:5ICdHl6m8XMMZbvAR3fylo"
+          "uid": "spotify:track:5ICdHl6m8XMMZbvAR3fylo",
+          "pos": 4
         },
         {
           "n": "In Love (Don't Mess Things Up)",
           "d": "02:17",
-          "uid": "spotify:track:0ATTj6ecm8A8RiT7mz9GK6"
+          "uid": "spotify:track:0ATTj6ecm8A8RiT7mz9GK6",
+          "pos": 5
         },
         {
           "n": "Make Me Over",
           "d": "02:25",
-          "uid": "spotify:track:5XQTEcBg8xWocyEdYhMsYZ"
+          "uid": "spotify:track:5XQTEcBg8xWocyEdYhMsYZ",
+          "pos": 6
         },
         {
           "n": "Cut Me Loose",
           "d": "03:28",
-          "uid": "spotify:track:1fF2EPtqRmO5FRZ6AWYw0C"
+          "uid": "spotify:track:1fF2EPtqRmO5FRZ6AWYw0C",
+          "pos": 7
         },
         {
           "n": "Underneath My Feet",
           "d": "03:40",
-          "uid": "spotify:track:3d2NhOJtj7aTzipQ3mr4Aq"
+          "uid": "spotify:track:3d2NhOJtj7aTzipQ3mr4Aq",
+          "pos": 8
         },
         {
           "n": "They Won't Hang Around",
           "d": "04:54",
-          "uid": "spotify:track:5LyYj4so3xijy4AjOhgWEB"
+          "uid": "spotify:track:5LyYj4so3xijy4AjOhgWEB",
+          "pos": 9
         },
         {
           "n": "Bad Girl",
           "d": "03:44",
-          "uid": "spotify:track:1sei51TK8wdPNc8tmwsrSc"
+          "uid": "spotify:track:1sei51TK8wdPNc8tmwsrSc",
+          "pos": 10
         },
         {
           "n": "Let It Go",
           "d": "04:40",
-          "uid": "spotify:track:22FrNStyxnmALOpBJFXWyk"
+          "uid": "spotify:track:22FrNStyxnmALOpBJFXWyk",
+          "pos": 11
         }
       ],
       "aN": "Lady Wray",
-      "aU": "1plioVQ0mcgAO7uhvWkJJy"
+      "aU": "1plioVQ0mcgAO7uhvWkJJy",
+      "uri": "spotify:album:4iJH23rAmDOdapyI9DFRd8"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b273ce1455251bfb5e0245c77bc8",
@@ -478,71 +518,85 @@ class AuthManager {
         {
           "n": "Another Lifetime",
           "d": "03:29",
-          "uid": "spotify:track:48WTGGIeSFD5ZMF51Rm4Y9"
+          "uid": "spotify:track:48WTGGIeSFD5ZMF51Rm4Y9",
+          "pos": 1
         },
         {
           "n": "Make It Out Alive (feat. SiR)",
           "d": "04:59",
-          "uid": "spotify:track:0VXinRGqxFxr1BKrOrC9pP"
+          "uid": "spotify:track:0VXinRGqxFxr1BKrOrC9pP",
+          "pos": 2
         },
         {
           "n": "If You Ever",
           "d": "04:40",
-          "uid": "spotify:track:5qbSSuBorHMw2wXC3qPe2Z"
+          "uid": "spotify:track:5qbSSuBorHMw2wXC3qPe2Z",
+          "pos": 3
         },
         {
           "n": "When Saturn Returns - Interlude",
           "d": "01:59",
-          "uid": "spotify:track:7F23U974sp3gkkCTA4gJ4M"
+          "uid": "spotify:track:7F23U974sp3gkkCTA4gJ4M",
+          "pos": 4
         },
         {
           "n": "Saturn (feat. Kwabs)",
           "d": "05:50",
-          "uid": "spotify:track:7HHlagS4aGF82LduE2FoY4"
+          "uid": "spotify:track:7HHlagS4aGF82LduE2FoY4",
+          "pos": 5
         },
         {
           "n": "Gabriel",
           "d": "04:51",
-          "uid": "spotify:track:5fp8Ww74MLFXjCYRxf6YMt"
+          "uid": "spotify:track:5fp8Ww74MLFXjCYRxf6YMt",
+          "pos": 6
         },
         {
           "n": "Orbit",
           "d": "04:54",
-          "uid": "spotify:track:5yrXolC7Un3peiFxwqbucn"
+          "uid": "spotify:track:5yrXolC7Un3peiFxwqbucn",
+          "pos": 7
         },
         {
           "n": "Love Supreme",
           "d": "04:16",
-          "uid": "spotify:track:591qGFsTHMPHQ9V6lz4CKJ"
+          "uid": "spotify:track:591qGFsTHMPHQ9V6lz4CKJ",
+          "pos": 8
         },
         {
           "n": "Curiosity",
           "d": "04:36",
-          "uid": "spotify:track:6j1owOuV2iTquW5vTw1fm3"
+          "uid": "spotify:track:6j1owOuV2iTquW5vTw1fm3",
+          "pos": 9
         },
         {
           "n": "Drive and Disconnect",
           "d": "04:30",
-          "uid": "spotify:track:6pEAd0UjznaKABT7WLLvmC"
+          "uid": "spotify:track:6pEAd0UjznaKABT7WLLvmC",
+          "pos": 10
         },
         {
           "n": "Don't Change",
           "d": "03:28",
-          "uid": "spotify:track:3tyB3Y7sfc02VwtsnW3aCO"
+          "uid": "spotify:track:3tyB3Y7sfc02VwtsnW3aCO",
+          "pos": 11
         },
         {
           "n": "Yellow of the Sun",
           "d": "04:51",
-          "uid": "spotify:track:1sopAWv0BToiOT2wAunyuV"
+          "uid": "spotify:track:1sopAWv0BToiOT2wAunyuV",
+          "pos": 12
         },
         {
           "n": "A Life Like This",
           "d": "04:38",
-          "uid": "spotify:track:7c8bCcNTQTx13FkjtKkb8E"
+          "uid": "spotify:track:7c8bCcNTQTx13FkjtKkb8E",
+          "pos": 13
         }
       ],
       "aN": "Nao",
-      "aU": "7aFTOGFDEqDtJUCziLVsVC"
+      "aU": "7aFTOGFDEqDtJUCziLVsVC",
+      "uri": "spotify:album:5rojZ5uUIKKkfNsFT92Vld"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b273b738999a454f126cb39b3b1c",
@@ -550,11 +604,13 @@ class AuthManager {
         {
           "n": "Night Walk",
           "d": "04:18",
-          "uid": "spotify:track:3CKXSzkxqgNMrM5YTR1qKB"
+          "uid": "spotify:track:3CKXSzkxqgNMrM5YTR1qKB",
+          "pos": 1
         }
       ],
       "aN": "Gold Fir",
-      "aU": "4dyk18v6VAa3Yb593eqmcE"
+      "aU": "4dyk18v6VAa3Yb593eqmcE",
+      "uri": "spotify:album:5mhECCl98nmq9BMFdFCWLi"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b273bf818d032f92466cd2ab9e2c",
@@ -562,11 +618,13 @@ class AuthManager {
         {
           "n": "Too Fast",
           "d": "04:35",
-          "uid": "spotify:track:0gqG3JmjuP4Pk8rIMwRCUJ"
+          "uid": "spotify:track:0gqG3JmjuP4Pk8rIMwRCUJ",
+          "pos": 1
         }
       ],
       "aN": "Yeek",
-      "aU": "5BhFZpE8kUGZJiKOsYjLQM"
+      "aU": "5BhFZpE8kUGZJiKOsYjLQM",
+      "uri": "spotify:album:5q1WO4a40Kvfo8J66Lagsh"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b2732aebf42d8901fbcd14c9eca8",
@@ -574,71 +632,85 @@ class AuthManager {
         {
           "n": "Before Paris",
           "d": "02:30",
-          "uid": "spotify:track:4D5POIvEJfBH8wO80Ic4T8"
+          "uid": "spotify:track:4D5POIvEJfBH8wO80Ic4T8",
+          "pos": 1
         },
         {
           "n": "Lost in Paris",
           "d": "03:14",
-          "uid": "spotify:track:4A7DUET5H4f7dJkUhjfVFB"
+          "uid": "spotify:track:4A7DUET5H4f7dJkUhjfVFB",
+          "pos": 2
         },
         {
           "n": "South of the River",
           "d": "04:30",
-          "uid": "spotify:track:5w3yxRRxy5pvZdUvBJF6ve"
+          "uid": "spotify:track:5w3yxRRxy5pvZdUvBJF6ve",
+          "pos": 3
         },
         {
           "n": "Movie",
           "d": "06:57",
-          "uid": "spotify:track:6pxElwU80zhjbCC77Vn8EI"
+          "uid": "spotify:track:6pxElwU80zhjbCC77Vn8EI",
+          "pos": 4
         },
         {
           "n": "Tick Tock",
           "d": "04:14",
-          "uid": "spotify:track:3al8a3uZrOZIHc6J1n8i5f"
+          "uid": "spotify:track:3al8a3uZrOZIHc6J1n8i5f",
+          "pos": 5
         },
         {
           "n": "It Runs Through Me",
           "d": "04:22",
-          "uid": "spotify:track:02CygBCQOIyEuhNZqHHcNx"
+          "uid": "spotify:track:02CygBCQOIyEuhNZqHHcNx",
+          "pos": 6
         },
         {
           "n": "Isn't She Lovely",
           "d": "01:27",
-          "uid": "spotify:track:23H8PpuhyTDHwpqcDm7vS6"
+          "uid": "spotify:track:23H8PpuhyTDHwpqcDm7vS6",
+          "pos": 7
         },
         {
           "n": "Disco Yes",
           "d": "05:41",
-          "uid": "spotify:track:61Ivix5DTnDPVjp1dgLyov"
+          "uid": "spotify:track:61Ivix5DTnDPVjp1dgLyov",
+          "pos": 8
         },
         {
           "n": "Man Like You",
           "d": "05:41",
-          "uid": "spotify:track:673BqQR0tNM3VtzcV3Ul2Q"
+          "uid": "spotify:track:673BqQR0tNM3VtzcV3Ul2Q",
+          "pos": 9
         },
         {
           "n": "Water Baby",
           "d": "05:32",
-          "uid": "spotify:track:6Pd20wirRDM9k4e69px3dN"
+          "uid": "spotify:track:6Pd20wirRDM9k4e69px3dN",
+          "pos": 10
         },
         {
           "n": "You're On My Mind",
           "d": "04:19",
-          "uid": "spotify:track:0ORL2BIQwHdshE8Zp2En2M"
+          "uid": "spotify:track:0ORL2BIQwHdshE8Zp2En2M",
+          "pos": 11
         },
         {
           "n": "Cos I Love You",
           "d": "04:14",
-          "uid": "spotify:track:58xN31xmYcfrgA56gAeM3W"
+          "uid": "spotify:track:58xN31xmYcfrgA56gAeM3W",
+          "pos": 12
         },
         {
           "n": "We've Come So Far",
           "d": "04:53",
-          "uid": "spotify:track:46mMjdrfaJicOdrOA7NtBa"
+          "uid": "spotify:track:46mMjdrfaJicOdrOA7NtBa",
+          "pos": 13
         }
       ],
       "aN": "Tom Misch",
-      "aU": "1uiEZYehlNivdK3iQyAbye"
+      "aU": "1uiEZYehlNivdK3iQyAbye",
+      "uri": "spotify:album:28enuddLPEA914scE6Drvk"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b273a55f73b70360daa13f3f30c2",
@@ -646,31 +718,37 @@ class AuthManager {
         {
           "n": "Wish You Were Gone",
           "d": "04:21",
-          "uid": "spotify:track:3PTW5X4BlDqVkxNoTTqBqb"
+          "uid": "spotify:track:3PTW5X4BlDqVkxNoTTqBqb",
+          "pos": 1
         },
         {
           "n": "Chronic Sunshine",
           "d": "05:31",
-          "uid": "spotify:track:3pnGJPnBptOIEa4bvdcLlG"
+          "uid": "spotify:track:3pnGJPnBptOIEa4bvdcLlG",
+          "pos": 2
         },
         {
           "n": "After School Club",
           "d": "05:15",
-          "uid": "spotify:track:7BpBtD7M2gVdAnKBkhSWPc"
+          "uid": "spotify:track:7BpBtD7M2gVdAnKBkhSWPc",
+          "pos": 3
         },
         {
           "n": "Social Sites",
           "d": "05:49",
-          "uid": "spotify:track:4jE1fmY1evwHShz81sCZlv"
+          "uid": "spotify:track:4jE1fmY1evwHShz81sCZlv",
+          "pos": 4
         },
         {
           "n": "Great Dane",
           "d": "08:58",
-          "uid": "spotify:track:6OCFXXVmoPFtidXA7ey1SI"
+          "uid": "spotify:track:6OCFXXVmoPFtidXA7ey1SI",
+          "pos": 5
         }
       ],
       "aN": "Cosmo Pyke",
-      "aU": "1RKG6WXRzmTJtbLRZTPU0T"
+      "aU": "1RKG6WXRzmTJtbLRZTPU0T",
+      "uri": "spotify:album:7tp5vLtNVMJEmoPbJEA1e0"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b2734102c5c0e3ec0b9ea6eeeb35",
@@ -678,61 +756,73 @@ class AuthManager {
         {
           "n": "Intro~",
           "d": "03:33",
-          "uid": "spotify:track:6tONDRvH1PwW5B7YjCLCHB"
+          "uid": "spotify:track:6tONDRvH1PwW5B7YjCLCHB",
+          "pos": 1
         },
         {
           "n": "~Outro",
           "d": "02:23",
-          "uid": "spotify:track:4tH7qusSwqxCjx4c4tphtE"
+          "uid": "spotify:track:4tH7qusSwqxCjx4c4tphtE",
+          "pos": 2
         },
         {
           "n": "Stranger",
           "d": "04:38",
-          "uid": "spotify:track:4MQwH8UtOM4qgJxd16kJX5"
+          "uid": "spotify:track:4MQwH8UtOM4qgJxd16kJX5",
+          "pos": 3
         },
         {
           "n": "Some Feeling",
           "d": "03:17",
-          "uid": "spotify:track:5e0b8UxDpZQro2cUCtK29Q"
+          "uid": "spotify:track:5e0b8UxDpZQro2cUCtK29Q",
+          "pos": 4
         },
         {
           "n": "Mysight",
           "d": "04:19",
-          "uid": "spotify:track:3y54TlZtGwtHapnvGEnwGX"
+          "uid": "spotify:track:3y54TlZtGwtHapnvGEnwGX",
+          "pos": 5
         },
         {
           "n": "Down By The River",
           "d": "04:57",
-          "uid": "spotify:track:50jPA11pFqdxB1wMK9Fz9h"
+          "uid": "spotify:track:50jPA11pFqdxB1wMK9Fz9h",
+          "pos": 6
         },
         {
           "n": "Selfish Lover",
           "d": "05:45",
-          "uid": "spotify:track:7gWvM2Ffp63wX3NlcssJ9N"
+          "uid": "spotify:track:7gWvM2Ffp63wX3NlcssJ9N",
+          "pos": 7
         },
         {
           "n": "Losing Time",
           "d": "05:41",
-          "uid": "spotify:track:6qfLL2ZoxIpqfzxrqXqEjP"
+          "uid": "spotify:track:6qfLL2ZoxIpqfzxrqXqEjP",
+          "pos": 8
         },
         {
           "n": "In The Living Room",
           "d": "04:52",
-          "uid": "spotify:track:6eXUUOfhAh6m7Udp53NE0W"
+          "uid": "spotify:track:6eXUUOfhAh6m7Udp53NE0W",
+          "pos": 9
         },
         {
           "n": "Where Are We Now?",
           "d": "05:52",
-          "uid": "spotify:track:5eYPrjCCB5qejaeArNGfpI"
+          "uid": "spotify:track:5eYPrjCCB5qejaeArNGfpI",
+          "pos": 10
         },
         {
           "n": "Terandara",
           "d": "03:27",
-          "uid": "spotify:track:3Gdg0B64ZBIu1KIUM7JPzS"
+          "uid": "spotify:track:3Gdg0B64ZBIu1KIUM7JPzS",
+          "pos": 11
         }
       ],
       "aN": "Mild Orange",
-      "aU": "6yXBFHhojjdwKoop55NsHf"
+      "aU": "6yXBFHhojjdwKoop55NsHf",
+      "uri": "spotify:album:63owNfr6ha16jnJWWIvh6z"
     },
     {
       "i": "https://i.scdn.co/image/ab67616d0000b2734a42166d927b3acce345c5c0",
@@ -740,259 +830,44 @@ class AuthManager {
         {
           "n": "3 Nights",
           "d": "03:58",
-          "uid": "spotify:track:1tNJrcVe6gwLEiZCtprs1u"
+          "uid": "spotify:track:1tNJrcVe6gwLEiZCtprs1u",
+          "pos": 1
         },
         {
           "n": "She Wants My Money",
           "d": "02:14",
-          "uid": "spotify:track:2VMJkgrhqfOOYBlZif2nvX"
+          "uid": "spotify:track:2VMJkgrhqfOOYBlZif2nvX",
+          "pos": 2
         },
         {
           "n": "Babydoll",
           "d": "02:38",
-          "uid": "spotify:track:1SocftHhtuqF7k83eUhHiz"
+          "uid": "spotify:track:1SocftHhtuqF7k83eUhHiz",
+          "pos": 3
         },
         {
           "n": "Westcoast Collective",
           "d": "02:47",
-          "uid": "spotify:track:582ndoUAn4YIN30NUnK6S2"
+          "uid": "spotify:track:582ndoUAn4YIN30NUnK6S2",
+          "pos": 4
         },
         {
           "n": "Socks",
           "d": "02:11",
-          "uid": "spotify:track:32KU85vllRfxfaV7ZNvHwT"
+          "uid": "spotify:track:32KU85vllRfxfaV7ZNvHwT",
+          "pos": 5
         },
         {
           "n": "King of Everything",
           "d": "03:14",
-          "uid": "spotify:track:5IWW129DwGyMVQAbaJz3rS"
+          "uid": "spotify:track:5IWW129DwGyMVQAbaJz3rS",
+          "pos": 6
         }
       ],
       "aN": "Dominic Fike",
-      "aU": "6USv9qhCn6zfxlBQIYJ9qs"
+      "aU": "6USv9qhCn6zfxlBQIYJ9qs",
+      "uri": "spotify:album:1DNx0H5ZX1ax3yyRwtgT4S"
     },
-    {
-      "i": "https://i.scdn.co/image/ab67616d0000b273f11f1c4ad183b7fa625f8534",
-      "t": [
-        {
-          "n": "Start",
-          "d": "01:46",
-          "uid": "spotify:track:6KkCuHNbOAWJzycgOEGpIg"
-        },
-        {
-          "n": "Thinkin Bout You",
-          "d": "03:21",
-          "uid": "spotify:track:5mphdlILgAq3vh1MSvAJTS"
-        },
-        {
-          "n": "Fertilizer",
-          "d": "01:40",
-          "uid": "spotify:track:5MXB4YBEm0GZwS9Nbs3JqM"
-        },
-        {
-          "n": "Sierra Leone",
-          "d": "02:29",
-          "uid": "spotify:track:4XgpXhvf9JBbKPtX84DFN7"
-        },
-        {
-          "n": "Sweet Life",
-          "d": "04:23",
-          "uid": "spotify:track:6fbjdXZNtoAJbJZUeT87Ii"
-        },
-        {
-          "n": "Not Just Money",
-          "d": "01:60",
-          "uid": "spotify:track:3VPmKgOCy3NGyyA4xaWwPd"
-        },
-        {
-          "n": "Super Rich Kids",
-          "d": "05:05",
-          "uid": "spotify:track:0K9oqDmJBgSFjXU1bUY9Fk"
-        },
-        {
-          "n": "Pilot Jones",
-          "d": "03:04",
-          "uid": "spotify:track:5ITIiswssMSAdTJ9ZDEI8D"
-        },
-        {
-          "n": "Crack Rock",
-          "d": "04:44",
-          "uid": "spotify:track:125FPswReMD9Ggvn69M7Ch"
-        },
-        {
-          "n": "Pyramids",
-          "d": "10:53",
-          "uid": "spotify:track:0rbK15g3UsDTVy1EuwgKYz"
-        },
-        {
-          "n": "Lost",
-          "d": "04:54",
-          "uid": "spotify:track:4L7jMAP8UcIe309yQmkdcO"
-        },
-        {
-          "n": "White",
-          "d": "01:16",
-          "uid": "spotify:track:6j9pCKVaJYNF7AdaNVTAaE"
-        },
-        {
-          "n": "Monks",
-          "d": "03:20",
-          "uid": "spotify:track:3YXVl3FvIrvhgSW9ME3qNf"
-        },
-        {
-          "n": "Bad Religion",
-          "d": "03:55",
-          "uid": "spotify:track:6jy12gDerHRUSwiEhfs9C6"
-        },
-        {
-          "n": "Pink Matter",
-          "d": "04:29",
-          "uid": "spotify:track:0C3W4yLCuyUxIEwkSpBO8H"
-        },
-        {
-          "n": "Forrest Gump",
-          "d": "03:15",
-          "uid": "spotify:track:6RBAJlxHY9Ulvw2y7yk4aX"
-        },
-        {
-          "n": "End",
-          "d": "02:15",
-          "uid": "spotify:track:3liAea2gyRKm8nWubcwsvl"
-        }
-      ],
-      "aN": "Frank Ocean",
-      "aU": "2h93pZq0e7k5yf4dywlkpM"
-    },
-    {
-      "i": "https://i.scdn.co/image/ab67616d0000b273a7695725012f01292f2877e0",
-      "t": [
-        {
-          "n": "Assume Form",
-          "d": "05:50",
-          "uid": "spotify:track:7ce0vNBSiPNpGvGJ4sot4H"
-        },
-        {
-          "n": "Mile High",
-          "d": "03:14",
-          "uid": "spotify:track:64ydkbrt0xhdJXRaam06Mc"
-        },
-        {
-          "n": "Tell Them",
-          "d": "03:28",
-          "uid": "spotify:track:3nWCi6Npr1DJObl5hgZwt7"
-        },
-        {
-          "n": "Into The Red",
-          "d": "04:17",
-          "uid": "spotify:track:69sxo1DMPHgsJs1KA5OMRh"
-        },
-        {
-          "n": "Barefoot In The Park",
-          "d": "04:31",
-          "uid": "spotify:track:1F7ZElvJAvWKQ7UaPXg9cF"
-        },
-        {
-          "n": "Can't Believe The Way We Flow",
-          "d": "04:27",
-          "uid": "spotify:track:0Q3HFb2L0Ydh8cFxM36Ltg"
-        },
-        {
-          "n": "Are You In Love?",
-          "d": "03:18",
-          "uid": "spotify:track:0aKl9lBwUvRUuXvgdT7Pgj"
-        },
-        {
-          "n": "Where's The Catch?",
-          "d": "05:36",
-          "uid": "spotify:track:5FYvk4lH8kLfRKHW8Ac0mL"
-        },
-        {
-          "n": "I'll Come Too",
-          "d": "04:42",
-          "uid": "spotify:track:0T3AyN1HbAlRScx2hTMScG"
-        },
-        {
-          "n": "Power On",
-          "d": "04:06",
-          "uid": "spotify:track:6eykhAkF0Ml7aBCJdiAYf7"
-        },
-        {
-          "n": "Don't Miss It",
-          "d": "05:59",
-          "uid": "spotify:track:5Q2LXkoqv8REmtHuXhbjJI"
-        },
-        {
-          "n": "Lullaby For My Insomniac",
-          "d": "04:44",
-          "uid": "spotify:track:3yGJfVaVJdQn8AKoHh62ct"
-        }
-      ],
-      "aN": "James Blake",
-      "aU": "53KwLdlmrlCelAZMaLVZqU"
-    },
-    {
-      "i": "https://i.scdn.co/image/ab67616d0000b273287af0e46fe70c8dc6c47609",
-      "t": [
-        {
-          "n": "Release Your Problems",
-          "d": "03:13",
-          "uid": "spotify:track:4IrwwrvilWDSEP38LUEcVl"
-        },
-        {
-          "n": "Talk Is Cheap",
-          "d": "04:38",
-          "uid": "spotify:track:0240T0gP9w6xEgIciBrfVF"
-        },
-        {
-          "n": "No Advice - Airport Version",
-          "d": "02:45",
-          "uid": "spotify:track:08pv23Z6uuRlMjz0e9HuMJ"
-        },
-        {
-          "n": "Melt",
-          "d": "04:11",
-          "uid": "spotify:track:7F9NJCMko9LLUrHxBS2Spb"
-        },
-        {
-          "n": "Gold",
-          "d": "05:45",
-          "uid": "spotify:track:1g7zNtcGrWt8gcBRwDQEkf"
-        },
-        {
-          "n": "To Me",
-          "d": "05:15",
-          "uid": "spotify:track:7v4vFLq2syogKodEaMrpYe"
-        },
-        {"n": "/", "d": "00:19", "uid": "spotify:track:1V4igmUU7t0LBaCETArqsb"},
-        {
-          "n": "Blush",
-          "d": "05:47",
-          "uid": "spotify:track:6Ny6ZruYFAkcskjqpSvrdX"
-        },
-        {
-          "n": "1998",
-          "d": "06:05",
-          "uid": "spotify:track:0iHwnccPp214om2eGT5gzm"
-        },
-        {
-          "n": "Cigarettes & Loneliness",
-          "d": "08:52",
-          "uid": "spotify:track:63YsXakppvKl1MsCYcn4zV"
-        },
-        {
-          "n": "Lesson In Patience",
-          "d": "06:46",
-          "uid": "spotify:track:0CpntTz4Mon5NXycUkc6GO"
-        },
-        {
-          "n": "Dead Body",
-          "d": "04:54",
-          "uid": "spotify:track:4gFWzCATnOfBkyJM8tpU3b"
-        }
-      ],
-      "aN": "Chet Faker",
-      "aU": "6UcJxoeHWWWyT5HZP064om"
-    }
   ];
 
   populateDb() async {
@@ -1005,7 +880,9 @@ class AuthManager {
           "name": music["n"],
           "duration": music["d"],
           "artistName": album["aN"],
-          "artistUid": album["aU"]
+          "artistUid": album["aU"],
+          "album" : album["uri"],
+          "position" : music["pos"]
         });
         firestore.collection("musics").doc(music["uid"]).set(result);
         // list.add(PlaylistSong(music["uid"], music["n"], music["d"], album["i"],

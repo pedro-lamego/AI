@@ -14,6 +14,8 @@ LikedSong _$LikedSongFromJson(Map<String, dynamic> json) {
     json['srcImage'],
     json['artistName'],
     json['artistUid'],
+    json['position'],
+    json['album'],
     json['timestamp'] as String,
   );
 }
@@ -25,5 +27,7 @@ Map<String, dynamic> _$LikedSongToJson(LikedSong instance) => <String, dynamic>{
       'srcImage': instance.srcImage,
       'artistName': instance.artistName,
       'artistUid': instance.artistUid,
+      'position': instance.position,
+      'album': instance.album,
       'timestamp': instance.timestamp,
     };

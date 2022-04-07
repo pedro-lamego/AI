@@ -78,7 +78,7 @@ exports.downvote = functions.https.onCall(async (data, context) => {
 exports.playSong = functions.https.onCall(async (data, context) => {
     /* 
     data = {
-        songId : songId
+        songUid : String
 
     }
     */
@@ -93,7 +93,7 @@ exports.playSong = functions.https.onCall(async (data, context) => {
         var spotifyAuth = ref.data();
 
         var response = await fetch("https://api.spotify.com/v1/me/player/play?device_id=" + spotifyAuth.device, {
-            body: JSON.stringify({"context_uri":"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr","offset":{"position":5},"position_ms":0}),
+            body: JSON.stringify({"context_uri":data.album,offset:{position:data.position},"position_ms":0}),
             headers: {
               Accept: "application/json",
               Authorization: "Bearer " + spotifyAuth.token,
@@ -101,7 +101,7 @@ exports.playSong = functions.https.onCall(async (data, context) => {
             },
             method: "PUT"
           })
-        
+        console.log(response)
         return;
     } catch (err) {
         console.log(err);

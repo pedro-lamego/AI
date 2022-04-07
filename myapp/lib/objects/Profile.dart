@@ -17,9 +17,6 @@ class Profile {
   List<PlaylistUser> playlists;
   Map<String, LikedSong> likedSongs;
 
-  // @JsonKey(ignore: true) TODO put image in profile
-  // File image;
-
   Profile(
     this.uid,
     this.name,

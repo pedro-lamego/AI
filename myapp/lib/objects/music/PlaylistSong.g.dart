@@ -14,9 +14,14 @@ PlaylistSong _$PlaylistSongFromJson(Map<String, dynamic> json) {
     json['srcImage'],
     json['artistName'],
     json['artistUid'],
+    json['position'],
+    json['album'],
     (json['upvotes'] as List)?.map((e) => e as String)?.toList(),
     (json['downvotes'] as List)?.map((e) => e as String)?.toList(),
     json['timestamp'] as String,
+    json['alreadyPlayed'] as bool,
+    json['playing'] as bool,
+    
   );
 }
 
@@ -28,7 +33,11 @@ Map<String, dynamic> _$PlaylistSongToJson(PlaylistSong instance) =>
       'srcImage': instance.srcImage,
       'artistName': instance.artistName,
       'artistUid': instance.artistUid,
+      'position': instance.position,
+      'album': instance.album,
       'upvotes': instance.upvotes,
       'downvotes': instance.downvotes,
       'timestamp': instance.timestamp,
+      'alreadyPlayed': instance.alreadyPlayed,
+      'playing': instance.playing,
     };
