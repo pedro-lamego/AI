@@ -108,7 +108,7 @@ class MenuItems {
     );
   }
 
-  static onChanged(BuildContext context, MenuItem item, WidgetRef ref) async {
+  static onChanged(BuildContext context, MenuItem item, WidgetRef ref) {
     PartyManager partyManager = ref.read(partyManagerProvider);
     switch (item) {
       case MenuItems.leave:
@@ -121,8 +121,8 @@ class MenuItems {
         partyManager.startQueue();
         break;
       case MenuItems.sugested:
-        List<Song> songs = await partyManager.sugestedSongs();
-        Navigator.pushNamed(context, SugestedSongs.route, arguments: songs);
+      print("entrei");
+        Navigator.pushNamed(context, SugestedSongs.route);
         break;
       case MenuItems.qrcode:
         Navigator.pushNamed(context, ShowQRCode.route,

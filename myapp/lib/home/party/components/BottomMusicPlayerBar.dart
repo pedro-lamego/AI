@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:myapp/home/party/partyManager.dart';
 
 import 'package:myapp/objects/music/PlaylistSong.dart';
 
-class BottomMusicPlayerBar extends StatefulWidget {
+class BottomMusicPlayerBar extends ConsumerStatefulWidget {
   PlaylistSong song;
   bool isAdmin;
   BottomMusicPlayerBar(this.song, this.isAdmin);
   @override
-  State<StatefulWidget> createState() => _BottomMusicPlayerBarState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _BottomMusicPlayerBarState();
 }
 
-class _BottomMusicPlayerBarState extends State<BottomMusicPlayerBar> {
+class _BottomMusicPlayerBarState extends ConsumerState<BottomMusicPlayerBar> {
   static const double _playerMinHeight = 60.0;
 
   @override
@@ -60,13 +62,9 @@ class _BottomMusicPlayerBarState extends State<BottomMusicPlayerBar> {
                   ),
                 ),
                 widget.isAdmin
-                    ? IconButton(onPressed: () {}, icon: Icon(Icons.stop))
+                    ? IconButton(onPressed: () {ref.read(partyManagerProvider).stopSong(widget.song.uid);}, icon: Icon(Icons.stop))
                     : Spacer(),
-                widget.isAdmin
-                    ? IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.keyboard_double_arrow_right))
-                    : Spacer(),
+               
               ],
             ));
       },

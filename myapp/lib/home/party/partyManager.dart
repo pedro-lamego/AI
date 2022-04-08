@@ -160,6 +160,7 @@ class PartyManager {
         .collection("playlists")
         .doc(partyBloc.uid)
         .update({"isOpen": false});
+    partyStopped();
   }
 
   changeQueue() {}
@@ -171,11 +172,21 @@ class PartyManager {
         .collection("songs")
         .doc(songUid)
         .update({"playing": true});
-    // HttpsCallableResult result =
-    //     await FirebaseFunctions.instance.httpsCallable("playSong").call({
-    //   "album": album,
-    //   "position": position,
-    // });
+    HttpsCallableResult result =
+        await FirebaseFunctions.instance.httpsCallable("playSong").call({
+      "album": album,
+      "position": position - 1,
+    });
+  }
+
+  stopSongAdmin(String songUid) {
+    partyBloc.isPlaying = "";
+    stopSong(songUid);
+  }
+
+  playSongAdmin(String album, int position, String songUid) {
+    partyBloc.isPlaying = "";
+    playSong(album, position, songUid);
   }
 
   stopSong(String songUid) async {
@@ -185,12 +196,13 @@ class PartyManager {
         .collection("songs")
         .doc(songUid)
         .update({"playing": false, "alreadyPlayed": true});
-    // HttpsCallableResult result =
-    //     await FirebaseFunctions.instance.httpsCallable("stopSong").call();
+    HttpsCallableResult result =
+        await FirebaseFunctions.instance.httpsCallable("stopSong").call();
   }
 
   Future<List<Song>> sugestedSongs() async {
-    List<String> artistList = [];
+    String artistList = "";
+    String trackList = "";
     List<Song> songList = [];
     List<Song> songListAux = [];
     if (partyBloc.songs.length > 2) {
@@ -201,24 +213,41 @@ class PartyManager {
 
       final random = Random();
 
-      int i = random.nextInt(songListAux.length ~/ 2);
-      int j = random.nextInt(
-              songListAux.length ~/ 2 + (songListAux.length % 2 == 0 ? 0 : 1)) +
-          (songListAux.length ~/ 2);
+      int i = random.nextInt(songListAux.length - 2);
 
-      for (; i <= j; i++) {
-        artistList.add(songListAux[i].artistUid);
-      }
+      artistList += songListAux[i].artistUid;
+      trackList += songListAux[i].uid.split(":")[2];
+
+      artistList += "%2C";
+      trackList += "%2C";
+
+      artistList += songListAux[i + 1].artistUid;
+      trackList += songListAux[i + 1].uid.split(":")[2];
     } else {
       return [];
     }
 
     HttpsCallableResult result = await FirebaseFunctions.instance
         .httpsCallable("sugestedSongs")
-        .call({"artistList": artistList});
-    for (dynamic song in result.data) {
-      songList.add(Song(song.uid, song.name, song.duration, song.srcImage,
-          song.artistName, song.artistUid, song.position, song.album));
+        .call({
+      "artists": artistList,
+      "tracks": trackList,
+      "owner": partyBloc.owner
+    });
+
+    if (result.data == false) {
+      return [];
+    }
+    for (var i = 0; i < result.data.length; i++) {
+      songList.add(Song(
+          result.data[i]["uid"],
+          result.data[i]["name"],
+          result.data[i]["duration"],
+          result.data[i]["srcImage"],
+          result.data[i]["artistName"],
+          result.data[i]["artistUid"],
+          result.data[i]["position"],
+          result.data[i]["album"]));
     }
     return songList;
   }
@@ -230,7 +259,7 @@ class PartyManager {
       songs.sort((a, b) => a.timestamp.compareTo(b.timestamp));
       songs.sort((a, b) => b.heuristic().compareTo(a.heuristic()));
       songs.removeWhere((song) => song.alreadyPlayed == true);
-      if (songs.length == 0) continue;
+      if (songs.isEmpty) continue;
       PlaylistSong song = songs[0];
       playSong(song.album, song.position, song.uid);
       List<String> duration = song.duration.split(":");

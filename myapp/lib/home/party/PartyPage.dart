@@ -1,4 +1,5 @@
 import 'package:myapp/aspects/widgets/PressedButton.dart';
+import 'package:myapp/aspects/widgets/SplashScreen.dart';
 import 'package:myapp/authentication/authManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +29,7 @@ class PartyPage extends ConsumerWidget {
           ? HomeParty(context, authManager, ref)
           : party.maybeWhen(
               orElse: () => Container(color: Colors.green),
-              loading: () => CircularProgressIndicator(),
+              loading: () => SplashScreen(),
               data: (party) {
                 List<PlaylistSong> songs = [];
                 party.songs.forEach((_, value) => songs.add(value));
@@ -84,7 +85,7 @@ class PartyPage extends ConsumerWidget {
                   index != -1 ? BottomMusicPlayerBar(songs[index], party.owner == authManager.userBloc.uid) : Container() 
                   ]);
               }),
-      loading: () => CircularProgressIndicator(),
+      loading: () => SplashScreen(),
       orElse: () => Container(
         color: Colors.red,
       ),

@@ -27,7 +27,7 @@ class RouterConfig {
     CreateParty.route: (_) => CreateParty(),
     JoinParty.route: (_) => JoinParty(),
     ShowQRCode.route: (context) => ShowQRCode(_args(context)),
-    SugestedSongs.route: (context) => SugestedSongs(_args(context)),
+    SugestedSongs.route: (context) => SugestedSongs(),
     SearchSong.route: (_) => SearchSong(),
   };
 }

@@ -13,6 +13,7 @@ class Playlist {
   String timestamp;
   bool isOpen;
 
+  String isPlaying = "ready";
   Playlist(
       this.uid, this.songs, this.name, this.owner, this.timestamp, this.isOpen);
 

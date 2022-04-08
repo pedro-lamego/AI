@@ -136,12 +136,13 @@ exports.stopSong = functions.https.onCall(async (data, context) => {
 
 exports.sugestedSongs = functions.https.onCall(async (data, context) => { 
     /* 
-    data = {
-        genres : List<String>
-        artists : List<String>
-        tracks : List<String>
-
-    }
+    data = 
+        {
+            artists : String
+            tracks : String
+            owner : string
+        }
+    ]
     */
     if (!context.auth) {
         throw new functions.https.HttpsError(
@@ -150,34 +151,40 @@ exports.sugestedSongs = functions.https.onCall(async (data, context) => {
         );
     }
     try {
-        var ref = await admin.firestore().collection("spotifyAuth").doc(context.auth.uid).get();
+        var ref = await admin.firestore().collection("spotifyAuth").doc(data.owner).get();
         var spotifyAuth = ref.data();
-
-        var myHeaders = new fetch.Headers();
-
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        myHeaders.append("Authorization", "Bearer " + spotifyAuth.token);
-
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
-
-        var response = await fetch(host + "/recommendations/?seed_artist=" + data.artists + "/?seed_genres="+ data.genres +"/?seed_tracks=" + data.tracks, requestOptions)
+        console.log(data.owner);
+        var response = await  fetch("https://api.spotify.com/v1/recommendations?limit=5&seed_artists="+ data.artists+"&seed_genres=rock&seed_tracks="+ data.tracks, {
+            headers: {
+              Accept: "application/json",
+              Authorization: "Bearer " + spotifyAuth.token,
+              "Content-Type": "application/json"
+            }
+          })
+          console.log(response)
         var result = await response.json();
+        console.log("Result is");
         console.log(result);
-        if (result.error_description !== undefined
-            //&& result.error_description === "Invalid access token."
-        ) {
-            return false;
+
+        tracksList = [];
+        for( var i= 0; i < 5; i++){
+            track ={
+                "uid" : result.tracks[i].uri,
+                "name" : result.tracks[i].name,
+                "srcImage" : result.tracks[i].album.images[0].url,
+                "artistUid" : result.tracks[i].artists[0].id,
+                "artistName" : result.tracks[i].artists[0].name,
+                "duration" : "04:20",
+                "position" : result.tracks[i].track_number,
+                "album" : result.tracks[i].album.uri,
+            };
+            tracksList.push(track);
         }
-        return result;
+        console.log(tracksList);
+        return tracksList;
     } catch (err) {
         console.log(err);
     }
-
     return false;
 });
 
@@ -199,7 +206,7 @@ exports.getDevices = functions.https.onCall(async (data, context) => {
         var myHeaders = new fetch.Headers();
 
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + "BQASPyq0lmTCXOn3RP4ZRyIq4aQH6RWDJpIwHKKbisgzeBqxG5nhSqHPuMn9m7YR6a6s9Vh6j_rYHTAaGUD8A7EgK0is_cfSLlmvb6x0r38uFgUR6IFzAehAjmuHvAQr1Rxl2LNhdMDQDSefnyGTEIZG7wnEfzt5uGtjAwCxqrhaW-pcpCYaCX0gCE2hulVv72xUmx50ssPJtRWyB8GM70OaRMozIwLPakEA5VZ6LiEixCkEnkYvkw7ev33iB-Vh0qEks7e8GMm867cp8phVq0FmkWFKZcJd");
+        myHeaders.append("Authorization", "Bearer " + spotifyAuth.token);
 
         var requestOptions = {
             method: 'GET',
@@ -208,6 +215,7 @@ exports.getDevices = functions.https.onCall(async (data, context) => {
         };
 
         var response = await fetch(host + "/me/player/devices/", requestOptions);
+  
         var result = await response.json();
 
         admin.firestore().collection("spotifyAuth").doc(context.auth.uid).update({"device":result.devices[0].id })
@@ -244,6 +252,8 @@ async function requestToken() {
 
         var response = await fetch("https://accounts.spotify.com/api/token", requestOptions);
         var result = await response.json();
+
+        
         console.log(result);
         return result;
     }catch(err){
@@ -251,3 +261,4 @@ async function requestToken() {
     }
     return false;
 }
+
